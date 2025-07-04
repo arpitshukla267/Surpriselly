@@ -286,6 +286,11 @@ export default function Store() {
     item.shop = item.shop?.trim();
   });
 
+ useEffect(() => {
+  // Scroll to top whenever location changes (i.e., new category/shop)
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}, [location]);
+
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const categoryParam = params.get("category");
