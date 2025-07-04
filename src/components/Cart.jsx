@@ -1,94 +1,181 @@
-import React from "react";
+import React, { useState } from "react";
 import { useCart } from "../components/CartContext";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Cart() {
-  const { cart, removeFromCart, updateQty } = useCart();
-
-  const incrementQty = (slug) => {
-    const item = cart.find((i) => i.slug === slug);
-    if (item) updateQty(slug, (item.qty || 1) + 1);
-  };
-
-  const decrementQty = (slug) => {
-    const item = cart.find((i) => i.slug === slug);
-    if (item) updateQty(slug, Math.max(1, (item.qty || 1) - 1));
-  };
+  const {
+    cart,
+    removeFromCart,
+    updateQty,
+    incrementQty,
+    decrementQty,
+    clearCart,
+  } = useCart();
+  const [showModal, setShowModal] = useState(false);
 
   const total = cart.reduce(
     (sum, item) => sum + (item.amount || 0) * (item.qty || 1),
     0
   );
 
+  const handleRemoveAll = () => {
+    clearCart();           // ✅ Clears the cart
+    setShowModal(false);   // ✅ Closes modal
+  };
+
+  const handleCheckout = () => {
+    window.location.href = "https://razorpay.me/@socialoffer";
+  }
+
   return (
-    <div className="max-w-6xl mx-auto py-10 mt-[5rem] md:mt-[13rem] px-4">
-      <h1 className="text-3xl font-bold mb-6">🛒 Your Cart</h1>
+    <div className="max-w-7xl mx-auto px-4 py-10 mt-[5rem] lg:mt-[8rem]">
+      <h1 className="text-4xl font-bold text-center text-purple-700 mb-10">
+        🛒 Your Cart
+      </h1>
 
       {cart.length === 0 ? (
-        <p className="text-gray-500 text-center">Your cart is empty.</p>
+        <div className="text-center">
+          <motion.img
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            // src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png"
+            // alt="Empty"
+            className="mx-auto h-48"
+          />
+          <p className="mt-6 text-gray-500 text-lg">Your cart is empty.</p>
+        </div>
       ) : (
-        <div className="grid md:grid-cols-3 gap-8">
-          {/* Left - Cart Items */}
-          <div className="md:col-span-2 space-y-6">
-            {cart.map((item, index) => (
-              <div
-                key={item.slug || index}
-                className="p-4 border rounded-lg shadow-md flex flex-col md:flex-row gap-4 items-center"
+        <div className="grid lg:grid-cols-3 gap-8 relative">
+          {/* Cart Items */}
+          <div className="lg:col-span-2 space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-semibold text-gray-800">Items</h2>
+              <button
+                onClick={() => setShowModal(true)}
+                className="text-red-600 text-sm hover:underline hover:cursor-pointer"
               >
-                <img
-                  src={item.img || item.image || "/placeholder.png"}
-                  alt={item.title}
-                  className="h-32 w-32 object-cover rounded"
-                />
-                <div className="flex-1 w-full">
-                  <h2 className="text-lg font-semibold">{item.title}</h2>
-                  <p className="text-purple-700 font-bold">
-                    ₹{item.amount || 0} x {item.qty || 1} = ₹
-                    {(item.amount || 0) * (item.qty || 1)}
-                  </p>
-                  <div className="flex gap-2 mt-2">
+                🗑 Remove All
+              </button>
+            </div>
+
+            <AnimatePresence>
+              {cart.map((item, index) => (
+                <motion.div
+                  key={item.slug || index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                  className="flex flex-col md:flex-row gap-6 bg-white border rounded-xl shadow hover:shadow-lg transition p-4"
+                >
+                  <img
+                    src={item.img || "/placeholder.png"}
+                    alt={item.title}
+                    className="h-28 w-28 rounded-md object-cover border"
+                  />
+                  <div className="flex-1">
+                    <h3 className="text-lg font-bold">{item.title}</h3>
+                    <p className="text-purple-600 mt-1">
+                      ₹{item.amount} × {item.qty} = ₹{item.amount * item.qty}
+                    </p>
+
+                    <div className="flex items-center mt-3 space-x-2">
+                      <button
+                        onClick={() => decrementQty(item.slug)}
+                        className="px-3 py-1 rounded-full bg-gray-200 hover:bg-gray-300 text-xl"
+                      >
+                        −
+                      </button>
+                      <span className="text-md font-medium">{item.qty}</span>
+                      <button
+                        onClick={() => incrementQty(item.slug)}
+                        className="px-3 py-1 rounded-full bg-gray-200 hover:bg-gray-300 text-xl"
+                      >
+                        +
+                      </button>
+                    </div>
+
                     <button
-                      onClick={() => decrementQty(item.slug)}
-                      className="px-3 py-1 bg-gray-200 rounded text-lg"
+                      onClick={() => removeFromCart(item.slug)}
+                      className="text-red-500 text-sm mt-2 hover:underline"
                     >
-                      −
-                    </button>
-                    <span className="px-3 text-lg">{item.qty || 1}</span>
-                    <button
-                      onClick={() => incrementQty(item.slug)}
-                      className="px-3 py-1 bg-gray-200 rounded text-lg"
-                    >
-                      +
+                      Remove
                     </button>
                   </div>
-                  <button
-                    onClick={() => removeFromCart(item.slug)}
-                    className="mt-2 text-sm text-red-500"
-                  >
-                    Remove
-                  </button>
-                </div>
-              </div>
-            ))}
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </div>
 
-          {/* Right - Total Summary */}
-          <div className="border rounded-lg shadow-md p-6 h-fit sticky top-20 bg-white">
-            <h2 className="text-xl font-bold mb-4">Order Summary</h2>
-            <div className="flex justify-between text-gray-600 mb-2">
+          {/* Order Summary (Compact) */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="bg-white border rounded-md p-3 shadow-sm sticky top-44 w-full max-w-xs h-fit"
+          >
+            <h2 className="text-base font-semibold text-gray-800 mb-2">
+              Order Summary
+            </h2>
+
+            <div className="flex justify-between text-lg text-gray-600 mb-1">
               <span>Total Items:</span>
               <span>{cart.reduce((sum, i) => sum + (i.qty || 1), 0)}</span>
             </div>
-            <div className="flex justify-between font-semibold text-purple-800 text-lg">
+
+            <div className="flex justify-between text-lg font-bold text-purple-700">
               <span>Total:</span>
               <span>₹{total.toFixed(2)}</span>
             </div>
 
-            <button className="mt-6 w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded transition">
-              Proceed to Checkout
+            <button className="mt-3 w-full py-1 bg-purple-600 text-white rounded text-lg font-medium hover:bg-purple-700 transition"
+            onClick={handleCheckout}>
+              Checkout
             </button>
-          </div>
+          </motion.div>
         </div>
       )}
+
+      {/* Remove All Confirmation Modal */}
+      <AnimatePresence>
+        {showModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-transparent backdrop-blur-xs bg-opacity-40 flex items-center justify-center z-50"
+          >
+            <motion.div
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.8 }}
+              className="bg-white p-6 rounded-xl shadow-xl w-full max-w-sm"
+            >
+              <h3 className="text-lg font-semibold mb-4 text-center ">
+                Remove All Items?
+              </h3>
+              <p className="text-sm text-gray-600 text-center mb-6">
+                Are you sure you want to clear your cart?
+              </p>
+              <div className="flex justify-between">
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded hover:cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleRemoveAll}
+                  className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded hover:cursor-pointer"
+                >
+                  Yes, Remove All
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

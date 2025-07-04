@@ -1,13 +1,3 @@
-// ✅ Store.jsx (final version with Birthday as subcategory only)
-
-import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import clsx from "clsx";
-import { useCart } from "../components/CartContext";
-import { useWishlist } from "../components/WishlistContext";
-import { useProduct } from "../components/ProductContext";
-import toast, { Toaster } from "react-hot-toast";
-
 import choco1 from "../assets/react.svg";
 import choco2 from "../assets/react.svg";
 import choco3 from "../assets/react.svg";
@@ -159,6 +149,7 @@ const page8Products = [
     amount: 849,
   },
 ];
+
 const dummyProducts = [
   { slug: "mens-wallet", title: "Men's Wallet", category: "Fashion & Accessories", shop: "Men", amount: 999, img: "https://example.com/wallet.jpg" },
   { slug: "womens-scarf", title: "Women's Scarf", category: "Fashion & Accessories", shop: "Women", amount: 799, img: "https://example.com/scarf.jpg" },
@@ -257,205 +248,11 @@ const subcategoryMap = {
   "Occasions": ["Birthday", "Anniversary", "Love Once", "Congratulations", "Thank You"],
 };
 
-export default function Store() {
-  const location = useLocation();
-  const { addToCart } = useCart();
-  const { toggleWishlist, isInWishlist } = useWishlist();
-  const { allProducts } = useProduct();
-
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
-  const [maxPrice, setMaxPrice] = useState(20000);
-  const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 6;
-
-  const allCombinedRaw = [
-    ...allProducts,
-    ...page2Products,
-    ...page7Products,
-    ...page8Products,
-    ...dummyProducts,
-    ...occasionProducts,
-  ];
-
-  const combinedProducts = [...new Map(allCombinedRaw.map(p => [p.slug, p])).values()];
-
-  combinedProducts.forEach((item) => {
-    item.category = item.category?.trim();
-    item.shop = item.shop?.trim();
-  });
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const categoryParam = params.get("category");
-    const shopParam = params.get("shop");
-
-    if (!categoryParam && !shopParam) {
-      setSelectedCategory("All");
-      setSelectedSubcategory(null);
-      setSearchTerm("");
-      setMaxPrice(20000);
-    } else {
-      if (categoryParam) setSelectedCategory(categoryParam);
-
-      const validShops = subcategoryMap[categoryParam] || [];
-      if (shopParam && validShops.includes(shopParam)) {
-        setSelectedSubcategory(shopParam);
-      } else {
-        setSelectedSubcategory(null);
-      }
-    }
-  }, [location.search]);
-
-  const subcategories = subcategoryMap[selectedCategory] || [];
-
-  const filtered = combinedProducts.filter((item) => {
-    const matchesCategory =
-      selectedCategory === "All" ||
-      (item.category === selectedCategory &&
-        (!selectedSubcategory || item.shop === selectedSubcategory));
-
-    const matchesSearch = item.title?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesPrice = (item.price || item.amount) <= maxPrice;
-
-    return matchesCategory && matchesSearch && matchesPrice;
-  });
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [selectedCategory, selectedSubcategory, searchTerm, maxPrice]);
-
-  const totalPages = Math.ceil(filtered.length / productsPerPage);
-  const paginatedProducts = filtered.slice(
-    (currentPage - 1) * productsPerPage,
-    currentPage * productsPerPage
-  );
-
-  return (
-    <div className="max-w-6xl mt-[5rem] lg:mt-[8rem] mx-auto px-6 py-10">
-      <Toaster position="top-right" />
-      <h1 className="text-3xl font-bold text-center mb-6">🛍️ Product Store</h1>
-
-      {subcategories.length > 0 && (
-        <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
-          <button
-            onClick={() => setSelectedSubcategory(null)}
-            className={clsx(
-              "px-4 py-1 rounded-full border text-sm font-semibold",
-              selectedSubcategory === null
-                ? "bg-purple-500 text-white"
-                : "bg-white text-purple-500 hover:bg-purple-50 hover:cursor-pointer"
-            )}
-          >
-            All
-          </button>
-          <span className="text-gray-400 font-bold">|</span>
-          {subcategories.map((sub) => (
-            <button
-              key={sub}
-              className={clsx(
-                "px-4 py-1 rounded-full border text-sm hover:cursor-pointer",
-                selectedSubcategory === sub
-                  ? "bg-purple-600 text-white"
-                  : "bg-white border-purple-300 text-purple-700 hover:bg-purple-100"
-              )}
-              onClick={() => setSelectedSubcategory(sub)}
-            >
-              {sub}
-            </button>
-          ))}
-        </div>
-      )}
-
-      <div className="grid md:grid-cols-2 gap-6 mb-8">
-        <input
-          type="text"
-          className="w-full border p-2 rounded"
-          placeholder="Search by name"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <div>
-          <label className="block mb-1 font-medium">Max Price: ₹{maxPrice}</label>
-          <input
-            type="range"
-            min="0"
-            max="20000"
-            value={maxPrice}
-            onChange={(e) => setMaxPrice(Number(e.target.value))}
-            className="w-full"
-          />
-        </div>
-      </div>
-
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {paginatedProducts.length === 0 ? (
-          <p className="col-span-full text-center">No matching products.</p>
-        ) : (
-          paginatedProducts.map((item) => {
-            const wished = isInWishlist(item.slug);
-            return (
-              <div
-                key={item.slug}
-                className="bg-white rounded-2xl shadow-xl p-4 hover:shadow-2xl transition-all duration-300 relative"
-              >
-                <img
-                  src={item.image || item.img}
-                  alt={item.title}
-                  className="w-full h-40 object-cover rounded-lg"
-                />
-                <h3 className="text-lg font-semibold mt-3">{item.title}</h3>
-                <p className="text-purple-700 font-bold text-xl">₹{item.price || item.amount}</p>
-
-                <button
-                  onClick={() => {
-                    toggleWishlist(item);
-                    toast.success(`${wished ? "Removed from" : "Added to"} Wishlist: ${item.title}`);
-                  }}
-                  className={`absolute top-3 right-3 text-2xl transition-transform duration-300 ${
-                    wished ? "text-red-500 scale-110" : "text-gray-400 hover:scale-110"
-                  }`}
-                >
-                  {wished ? "❤️" : "🤍"}
-                </button>
-
-                <button
-                  onClick={() => {
-                    addToCart(item);
-                    toast.success(`${item.title} added to cart!`);
-                  }}
-                  className="mt-4 w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-full"
-                >
-                  Add to Cart
-                </button>
-              </div>
-            );
-          })
-        )}
-      </div>
-
-      {totalPages > 1 && (
-        <div className="flex justify-center gap-4 mt-6">
-          <button
-            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-            disabled={currentPage === 1}
-            className="px-3 py-1 bg-purple-100 hover:bg-purple-200 rounded"
-          >
-            Previous
-          </button>
-          <span className="font-semibold">
-            Page {currentPage} of {totalPages}
-          </span>
-          <button
-            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-            disabled={currentPage === totalPages}
-            className="px-3 py-1 bg-purple-100 hover:bg-purple-200 rounded"
-          >
-            Next
-          </button>
-        </div>
-      )}
-    </div>
-  );
-}
+export {
+  page2Products,
+  page7Products,
+  page8Products,
+  dummyProducts,
+  occasionProducts,
+  subcategoryMap
+};

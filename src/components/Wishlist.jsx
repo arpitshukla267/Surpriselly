@@ -67,7 +67,7 @@ export default function WishlistPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto mt-[13rem] py-10 px-4 relative">
+    <div className="max-w-6xl mx-auto mt-[5rem] lg:mt-[10rem] py-10 px-4 relative">
       <Toaster position="top-right" />
 
       {/* Confirmation Modal */}
@@ -185,3 +185,7 @@ export default function WishlistPage() {
     </div>
   );
 }
+
+
+
+

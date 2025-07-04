@@ -9,14 +9,13 @@ import {
   FaMapMarkerAlt,
   FaBars,
   FaTimes,
-  FaChevronDown,
+  FaUser,
 } from "react-icons/fa";
-import { NavLink, useNavigate } from "react-router-dom";
-import { useSwipeable } from "react-swipeable";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useCart } from "../components/CartContext";
 import { useWishlist } from "../components/WishlistContext";
+import { useProduct } from "../components/ProductContext";
 
-const categoriesTop = ["Combos", "Hampers", "Quick Gifts", "Local shops"];
 const categoriesBottom = [
   "Personalized Gifts",
   "Electronics & Gadgets",
@@ -24,21 +23,35 @@ const categoriesBottom = [
   "Home & Decor",
   "Food & Beverages",
   "Toys & Games",
-  "Wellness & Self‑Care",
+  "Wellness & Selfcare",
 ];
 
 export default function Nav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [showCategories, setShowCategories] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const { cart } = useCart();
   const { wishlist } = useWishlist();
+  const { allProducts } = useProduct();
   const navigate = useNavigate();
+  const location = useLocation();
+  const currentCategoryRaw = new URLSearchParams(location.search).get("category") || "";
+  const currentCategory = decodeURIComponent(currentCategoryRaw).trim();
 
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
     return () => (document.body.style.overflow = "");
   }, [mobileMenuOpen]);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!e.target.closest(".profile-dropdown")) {
+        setProfileDropdownOpen(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
 
   const handleSearch = () => {
     if (searchTerm.trim()) {
@@ -47,19 +60,21 @@ export default function Nav() {
     }
   };
 
-  const swipeHandlers = useSwipeable({
-    onSwipedLeft: () => setMobileMenuOpen(false),
-    onSwipedRight: () => setMobileMenuOpen(true),
-  });
+  const handleCategoryClick = (cat) => {
+    navigate(`/store?category=${encodeURIComponent(cat.trim())}`);
+    setMobileMenuOpen(false);
+  };
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-white text-black shadow-md">
-      <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between md:justify-around">
+      {/* Top Row */}
+      <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         <a href="/" className="flex items-center gap-2 shrink-0">
           <img src={logo} alt="Logo" className="h-14" />
         </a>
 
-        <div className="hidden md:flex ml-[6rem] flex-1 mx-6">
+        {/* Search bar - Desktop */}
+        <div className="hidden md:flex flex-1 mx-6">
           <div className="relative w-full max-w-md group">
             <input
               type="text"
@@ -80,10 +95,14 @@ export default function Nav() {
           </div>
         </div>
 
+        {/* Icons - Desktop */}
         <div className="hidden md:flex items-center gap-6">
-          <NavLink to="/store" className="text-purple-700 font-semibold hover:underline">
+          <button
+            onClick={() => navigate("/store")}
+            className="text-purple-700 font-semibold hover:cursor-pointer hover:underline"
+          >
             Same Day Delivery <FaMotorcycle className="inline ml-1" />
-          </NavLink>
+          </button>
           <div className="flex items-center gap-2 font-medium text-purple-700">
             <FaMapMarkerAlt className="text-red-600" />
             <span>Jhansi</span>
@@ -104,14 +123,50 @@ export default function Nav() {
               </span>
             )}
           </NavLink>
+
           <button className="relative">
             <FaBell className="text-2xl text-purple-700 hover:scale-110 transition" />
             <span className="absolute -top-1 -right-2 h-4 w-4 text-[10px] bg-red-600 text-white rounded-full grid place-content-center">
               0
             </span>
           </button>
+
+          {/* 👤 Profile Dropdown */}
+          <div className="relative profile-dropdown">
+            <button
+              onClick={() => setProfileDropdownOpen((prev) => !prev)}
+              className="text-purple-700 text-2xl hover:cursor-pointer"
+              title="Profile"
+            >
+              <FaUser />
+            </button>
+
+            {profileDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow-lg z-50">
+                <button
+                  onClick={() => {
+                    navigate("/login");
+                    setProfileDropdownOpen(false);
+                  }}
+                  className="block w-full text-left px-4 py-2 text-sm hover:bg-purple-100"
+                >
+                  Login
+                </button>
+                <button
+                  onClick={() => {
+                    navigate("/signup");
+                    setProfileDropdownOpen(false);
+                  }}
+                  className="block w-full text-left px-4 py-2 text-sm hover:bg-purple-100"
+                >
+                  Signup
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
+        {/* Mobile Menu Button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="md:hidden text-purple-700 text-2xl"
@@ -120,127 +175,69 @@ export default function Nav() {
         </button>
       </div>
 
-      {/* Mobile Dropdown */}
-      <div
-        {...swipeHandlers}
-        className={`md:hidden transform transition-all duration-500 ease-in-out origin-top bg-white shadow-lg overflow-hidden ${
-          mobileMenuOpen ? "max-h-[1000px] opacity-100 scale-100 py-4 px-4" : "max-h-0 opacity-0 scale-95 py-0 px-4"
-        }`}
-      >
-        <div className="space-y-4 transition-opacity duration-500">
-          <div className="relative w-full">
-            <input
-              type="text"
-              placeholder="Search for products..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-              className="w-full pl-10 pr-10 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
-            <FaSearch className="absolute left-3 top-2.5 text-gray-400" />
+      {/* Bottom strip - Desktop */}
+      <div className="bg-white text-black p-2 font-medium text-sm border-b hidden md:flex">
+        <div className="max-w-7xl mx-auto px-6 py-2 flex flex-wrap gap-12">
+          {categoriesBottom.map((cat, i) => (
             <button
-              onClick={handleSearch}
-              className="absolute right-2 top-2.5 text-purple-600 hover:text-purple-800"
-            >
-              <FaSearch />
-            </button>
-          </div>
-
-          <NavLink to="/store" onClick={() => setMobileMenuOpen(false)} className="block text-purple-700 font-medium">
-            <FaMotorcycle className="inline mr-2" /> Same Day Delivery
-          </NavLink>
-
-          <NavLink to="/wishlist" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 text-purple-700 font-medium">
-            <FaHeart className="text-lg" /> Wishlist
-            {wishlist.length > 0 && (
-              <span className="ml-1 text-xs bg-red-600 text-white rounded-full h-4 w-4 grid place-content-center">
-                {wishlist.length}
-              </span>
-            )}
-          </NavLink>
-
-          <NavLink to="/cart" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 text-purple-700 font-medium">
-            <FaShoppingCart className="text-lg" /> Cart
-            {cart.length > 0 && (
-              <span className="ml-1 text-xs bg-red-600 text-white rounded-full h-4 w-4 grid place-content-center">
-                {cart.reduce((sum, item) => sum + item.qty, 0)}
-              </span>
-            )}
-          </NavLink>
-
-          {categoriesTop.map((cat, i) => (
-            <div key={i} className="text-sm font-semibold text-gray-700">
-              {cat}
-            </div>
-          ))}
-
-          {/* Collapsible categories */}
-          <div>
-            <button
-              onClick={() => setShowCategories(!showCategories)}
-              className="flex items-center gap-2 text-sm text-gray-700 font-medium mt-2"
-            >
-              More Categories
-              <FaChevronDown className={`transform transition-transform ${showCategories ? "rotate-180" : "rotate-0"}`} />
-            </button>
-
-            <div
-              className={`transition-all duration-300 overflow-hidden ${
-                showCategories ? "max-h-[500px] mt-2 space-y-1" : "max-h-0"
+              key={i}
+              onClick={() => handleCategoryClick(cat)}
+              className={`cursor-pointer hover:text-purple-700 whitespace-nowrap ${
+                currentCategory === cat.trim() ? "text-purple-700 font-semibold underline" : ""
               }`}
             >
-              {categoriesBottom.map((cat, i) => (
-                <div key={i} className="text-sm text-gray-600">
-                  {cat}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Top categories strip */}
-      <div className="bg-[#7669C1] text-white p-2 hidden md:flex gap-7 font-semibold text-sm">
-        <div className="max-w-7xl mx-auto px-6 py-2 flex gap-6">
-          {categoriesTop.map((cat, i) => (
-            <div key={i} className="cursor-pointer hover:underline flex items-center gap-1">
-              {cat === "Combos" && (
-                <span className="bg-red-500 text-white px-2 py-0.5 hover:no-underline text-xs rounded-full">
-                  NEW
-                </span>
-              )}
               {cat}
-            </div>
+            </button>
           ))}
         </div>
       </div>
 
-      {/* Bottom categories strip */}
-      <div className="bg-white text-black p-2 font-medium text-sm border-b hidden md:flex">
-        <div className="max-w-7xl mx-auto px-6 py-2 flex flex-wrap gap-6">
-          {categoriesBottom.map((cat, i) => (
-            <div
-              key={i}
-              className="cursor-pointer hover:text-purple-700 whitespace-nowrap"
+      {/* 🔽 Top-down Sliding Mobile Menu */}
+      <div
+        className={`fixed top-0 left-0 right-0 z-40 transition-transform duration-300 bg-white shadow-xl ${
+          mobileMenuOpen ? "translate-y-0" : "-translate-y-full"
+        }`}
+      >
+        <div className="flex justify-between items-center px-4 py-4 border-b">
+          <img src={logo} alt="Logo" className="h-10" />
+          <button onClick={() => setMobileMenuOpen(false)}>
+            <FaTimes className="text-2xl text-purple-700" />
+          </button>
+        </div>
+
+        {/* Search input */}
+        <div className="px-4 py-2">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+            className="w-full border px-3 py-2 rounded focus:outline-purple-600"
+          />
+          <button
+            onClick={handleSearch}
+            className="mt-2 w-full bg-purple-600 text-white py-2 rounded hover:bg-purple-700"
+          >
+            Search
+          </button>
+        </div>
+
+        {/* Categories */}
+        <div className="flex flex-col px-4 py-4 gap-2">
+          {categoriesBottom.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => handleCategoryClick(cat)}
+              className={`text-left py-2 px-3 rounded hover:bg-purple-100 ${
+                currentCategory === cat.trim() ? "bg-purple-200 font-semibold" : ""
+              }`}
             >
               {cat}
-            </div>
+            </button>
           ))}
         </div>
       </div>
-
-      {/* Floating cart on mobile */}
-      <NavLink
-        to="/cart"
-        className="md:hidden fixed bottom-6 right-4 z-50 bg-purple-600 text-white p-3 rounded-full shadow-lg hover:scale-110 transition-all"
-      >
-        <FaShoppingCart className="text-xl" />
-        {cart.length > 0 && (
-          <span className="absolute -top-1 -right-1 text-[10px] bg-red-600 text-white rounded-full h-4 w-4 grid place-content-center">
-            {cart.reduce((sum, item) => sum + item.qty, 0)}
-          </span>
-        )}
-      </NavLink>
     </header>
   );
 }

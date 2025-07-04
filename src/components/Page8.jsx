@@ -4,71 +4,98 @@ import toast, { Toaster } from "react-hot-toast";
 import { FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useProduct } from "./ProductContext";
+import { useCart } from "./CartContext";
 import { useWishlist } from "./WishlistContext";
+
 import choco1 from "../assets/react.svg";
 import choco2 from "../assets/react.svg";
 import choco3 from "../assets/react.svg";
 import choco4 from "../assets/react.svg";
 
-const mockFetch = () =>
-  new Promise((res) =>
-    setTimeout(() => {
-      res([
-        {
-          title: "Pedigree Dog Food",
-          price: 849,
-          originalPrice: 999,
-          discount: "15% Off",
-          slug: "pedigree-dog-food",
-          image: choco1,
-          delivery: "Tomorrow",
-        },
-        {
-          title: "Whiskas Cat Food",
-          price: 799,
-          slug: "whiskas-cat-food",
-          image: choco2,
-          delivery: "Tomorrow",
-        },
-        {
-          title: "Choco Treats",
-          price: 2649,
-          originalPrice: 2899,
-          discount: "9% Off",
-          slug: "choco-treats",
-          image: choco3,
-          delivery: "Tomorrow",
-        },
-        {
-          title: "Clothes for Pets",
-          price: 849,
-          originalPrice: 949,
-          discount: "10% Off",
-          slug: "clothes-for-pets",
-          image: choco4,
-          delivery: "Tomorrow",
-        },
-      ]);
-    }, 1000)
-  );
+// ✅ Default dummy pet items shown first
+const defaultItems = [
+  {
+    title: "Pedigree Dog Food",
+    price: 849,
+    originalPrice: 999,
+    discount: "15% Off",
+    slug: "pedigree-dog-food",
+    image: choco1,
+    delivery: "Tomorrow",
+    category: "Pets Gifts",
+    shop: "Pet Gifts",
+    amount: 849,
+  },
+  {
+    title: "Whiskas Cat Food",
+    price: 799,
+    slug: "whiskas-cat-food",
+    image: choco2,
+    delivery: "Tomorrow",
+    category: "Pets Gifts",
+    shop: "Pet Gifts",
+    amount: 799,
+  },
+  {
+    title: "Choco Treats",
+    price: 2649,
+    originalPrice: 2899,
+    discount: "9% Off",
+    slug: "choco-treats",
+    image: choco3,
+    delivery: "Tomorrow",
+    category: "Pets Gifts",
+    shop: "Pet Gifts",
+    amount: 2649,
+  },
+  {
+    title: "Clothes for Pets",
+    price: 849,
+    originalPrice: 949,
+    discount: "10% Off",
+    slug: "clothes-for-pets",
+    image: choco4,
+    delivery: "Tomorrow",
+    category: "Pets Gifts",
+    shop: "Pet Gifts",
+    amount: 849,
+  },
+];
 
 export default function Page8() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
-  const { toggleWishlist, isInWishlist } = useWishlist();
   const { addProducts } = useProduct();
-
-  useEffect(() => {
-    mockFetch().then((data) => {
-      setItems(data);
-      setLoading(false);
-      addProducts(data);
-    });
-  }, []);
-
+  const { addToCart } = useCart();
+  const { toggleWishlist, isInWishlist } = useWishlist();
   const shimmerArray = new Array(4).fill(null);
 
+  // ✅ Show dummy → try backend fetch → fallback if fails
+  useEffect(() => {
+    setItems(defaultItems);
+    setLoading(false);
+    addProducts(defaultItems);
+
+    fetch("https://your-backend.com/api/products?category=Pets%20Gifts&shop=Pet%20Gifts")
+      .then((res) => {
+        if (!res.ok) throw new Error("Network error");
+        return res.json();
+      })
+      .then((fetched) => {
+        const withAmount = fetched.map((item) => ({
+          ...item,
+          amount: item.amount ?? item.price,
+        }));
+        setItems(withAmount);
+        addProducts(withAmount);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch backend data:", err.message);
+      });
+  }, []);
+
+  // Scroll-to-view on dispatch
   useEffect(() => {
     const scrollToSelf = () => {
       const el = document.getElementById("page8-section");
@@ -87,9 +114,7 @@ export default function Page8() {
     e.preventDefault();
     toggleWishlist(item);
     toast.success(
-      isInWishlist(item.slug)
-        ? `Removed from Wishlist: ${item.title}`
-        : `Added to Wishlist: ${item.title}`
+      `${isInWishlist(item.slug) ? "Removed from" : "Added to"} Wishlist: ${item.title}`
     );
   };
 
@@ -98,13 +123,13 @@ export default function Page8() {
       id="page8-section"
       className="bg-purple-50 py-12 mb-[-6rem] px-4 sm:px-6 lg:px-8 min-h-auto"
     >
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster position="top-right" />
       <Cards
         title="Pet Gifts"
         data={loading ? shimmerArray : items}
         selectedItem={selected}
         onSelect={setSelected}
-        viewMoreLink="/products"
+        viewMoreLink="/store?category=Pets%20%26%20Gifts&shop=Pet%20Gifts"
         itemKey={(item, i) => `page8-${item?.slug || `shimmer-${i}`}`}
         renderItem={(item, _, isActive) =>
           !item ? (
@@ -127,7 +152,7 @@ export default function Page8() {
               />
               <button
                 className="absolute top-3 right-3 bg-white p-1.5 rounded-full shadow group-hover:scale-105 transition"
-                onClick={(e) => handleWishlistToggle(e, item)} // ✅ Updated here
+                onClick={(e) => handleWishlistToggle(e, item)}
               >
                 <FaHeart
                   className={`text-sm transition ${

@@ -20,12 +20,17 @@ export function CartProvider({ children }) {
   const addToCart = (item) => {
     setCart((prev) => {
       const exists = prev.find((i) => i.slug === item.slug);
+      const itemWithAmount = {
+        ...item,
+        amount: item.amount ?? item.price, // ✅ Ensure amount always exists
+      };
+
       if (exists) {
         return prev.map((i) =>
           i.slug === item.slug ? { ...i, qty: (i.qty || 1) + 1 } : i
         );
       } else {
-        return [...prev, { ...item, qty: 1 }];
+        return [...prev, { ...itemWithAmount, qty: 1 }];
       }
     });
   };

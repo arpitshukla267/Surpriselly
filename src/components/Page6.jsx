@@ -11,10 +11,7 @@ import choco2 from "../assets/react.svg";
 import choco3 from "../assets/react.svg";
 import choco4 from "../assets/react.svg";
 
-const mockFetch = () =>
-  new Promise((res) =>
-    setTimeout(() => {
-      res([
+const defaultItems = [
         {
           title: "Shirt",
           price: 849,
@@ -49,9 +46,7 @@ const mockFetch = () =>
           image: choco4,
           delivery: "Tomorrow",
         },
-      ]);
-    }, 1000)
-  );
+      ]
 
 export default function Page6() {
   const [items, setItems] = useState([]);
@@ -61,12 +56,32 @@ export default function Page6() {
   const { addProducts } = useProduct();
 
   useEffect(() => {
-    mockFetch().then((data) => {
-      setItems(data);
-      setLoading(false);
-      addProducts(data);
-    });
+    // Step 1: show dummy data immediately
+    setItems(defaultItems);
+    setLoading(false);
+    addProducts(defaultItems);
+  
+    // Step 2: fetch backend data
+    fetch("https://your-backend.com/api/products?category=Electronics%20%26%20Gadgets")
+      .then((res) => {
+        if (!res.ok) throw new Error("Network error");
+        return res.json();
+      })
+      .then((fetched) => {
+        const withAmount = fetched.map((item) => ({
+          ...item,
+          amount: item.amount ?? item.price,
+        }));
+        setItems(withAmount);
+        addProducts(withAmount);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch backend data:", err.message);
+        // Keep defaultItems visible
+      });
   }, []);
+  
+  
 
   const shimmerArray = new Array(4).fill(null);
 
@@ -102,7 +117,7 @@ export default function Page6() {
         data={loading ? shimmerArray : items}
         selectedItem={selected}
         onSelect={setSelected}
-        viewMoreLink="/products"
+        viewMoreLink="/store?category=Fashion%20%26%20Accessories"
         itemKey={(item, i) => `page6-${item?.slug || `shimmer-${i}`}`}
         renderItem={(item, _, isActive) =>
           !item ? (

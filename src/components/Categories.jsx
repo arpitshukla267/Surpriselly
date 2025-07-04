@@ -5,11 +5,11 @@ import { Link } from "react-router-dom";
 import { useProduct } from "./ProductContext";
 
 const categories = [
-  { name: "Birthday", icon: "🎂" },
-  { name: "Anniversary", icon: "⏳" },
-  { name: "Love Once", icon: "💚" },
-  { name: "Congratulations", icon: "🙌" },
-  { name: "Thank You", icon: "👍" },
+  { name: "Birthday", icon: "🎂", shop: "Birthday", label: "Birthday Shop" },
+  { name: "Anniversary", icon: "⏳", shop: "Anniversary" },
+  { name: "Love Once", icon: "💚", shop: "Love Once" },
+  { name: "Congratulations", icon: "🙌", shop: "Congratulations" },
+  { name: "Thank You", icon: "👍", shop: "Thank You" },
 ];
 
 const categoryGifts = {
@@ -21,7 +21,8 @@ const categoryGifts = {
       rating: 5,
       reviews: 256,
       slug: "angelic-rose-birthday-bliss",
-      image: "https://www.fnp.com/images/pr/l/v20221201183812/angelic-rose-bouquet-n-black-forest-birthday-bliss_1.jpg",
+      image:
+        "https://www.fnp.com/images/pr/l/v20221201183812/angelic-rose-bouquet-n-black-forest-birthday-bliss_1.jpg",
     },
     {
       title: "Golden Glow Sansevieria Birthday Planter",
@@ -30,7 +31,8 @@ const categoryGifts = {
       rating: 5,
       reviews: 98,
       slug: "golden-glow-sansevieria",
-      image: "https://www.fnp.com/images/pr/l/v20211210124700/golden-glow-sansevieria-birthday-planter_1.jpg",
+      image:
+        "https://www.fnp.com/images/pr/l/v20211210124700/golden-glow-sansevieria-birthday-planter_1.jpg",
     },
   ],
   Anniversary: [
@@ -82,13 +84,22 @@ const categoryGifts = {
 export default function Categories() {
   const [activeCategory, setActiveCategory] = useState("Birthday");
   const [isLoading, setIsLoading] = useState(false);
+  const [showMobileCat, setShowMobileCat] = useState(false);
   const [wishlist, setWishlist] = useState(() => {
     return JSON.parse(localStorage.getItem("wishlist")) || [];
   });
   const { addProducts } = useProduct();
 
   useEffect(() => {
-    const allProducts = Object.values(categoryGifts).flat();
+    const allProducts = Object.values(categoryGifts)
+      .flat()
+      .map((item) => ({
+        ...item,
+        amount: item.price,
+        category: "Occasions",
+        shop:
+          categories.find((c) => c.name === activeCategory)?.shop || "",
+      }));
     addProducts(allProducts);
   }, []);
 
@@ -127,6 +138,9 @@ export default function Categories() {
     }, 400);
   };
 
+  const currentCategory = categories.find((cat) => cat.name === activeCategory);
+  const currentShop = currentCategory?.shop || "";
+
   return (
     <>
       <Toaster position="top-right" reverseOrder={false} />
@@ -135,8 +149,10 @@ export default function Categories() {
           For Occasions
         </h2>
 
-        <div className="max-w-7xl mx-auto bg-[#7669c1] shadow rounded-4xl p-1 mb-10 overflow-hidden">
-          <div className="flex gap-4 overflow-x-auto flex-nowrap rounded-full">
+        {/* ──────────── CATEGORY BAR ──────────── */}
+        <div className="max-w-7xl mx-auto bg-[#7669c1] shadow rounded-2xl lg:rounded-4xl p-1 mb-10 overflow-hidden relative">
+          {/* Desktop: Category Scroll */}
+          <div className="hidden sm:flex gap-4 overflow-x-auto flex-nowrap rounded-full">
             {categories.map((cat) => {
               const selected = activeCategory === cat.name;
               return (
@@ -155,8 +171,50 @@ export default function Categories() {
               );
             })}
           </div>
+
+          {/* Mobile: Hamburger Toggle */}
+          <div className="sm:hidden">
+            <button
+              className="flex items-center justify-between w-full px-8 py-3 bg-[#7669c1] text-white text-lg font-medium"
+              onClick={() => setShowMobileCat((prev) => !prev)}
+            >
+              <div>Categories</div>
+              <div>☰</div>
+            </button>
+
+            {/* Animated Dropdown */}
+            <div
+              className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                showMobileCat ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+              }`}
+            >
+              <div className="bg-white rounded-b-xl px-4 py-2 space-y-1">
+                {categories.map((cat) => {
+                  const selected = activeCategory === cat.name;
+                  return (
+                    <button
+                      key={cat.name}
+                      onClick={() => {
+                        switchCategory(cat.name);
+                        setShowMobileCat(false);
+                      }}
+                      className={`w-full text-left py-2 px-3 rounded-md text-base flex items-center gap-2 ${
+                        selected
+                          ? "bg-purple-100 text-purple-800 font-semibold"
+                          : "text-gray-800 hover:bg-purple-50"
+                      }`}
+                    >
+                      <span>{cat.icon}</span>
+                      {cat.name}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
         </div>
 
+        {/* ──────────── GIFTS GRID ──────────── */}
         <div className="max-w-6xl mx-auto grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {isLoading ? (
             Array(4)
@@ -232,6 +290,16 @@ export default function Categories() {
               No gifts available for {activeCategory}.
             </div>
           )}
+        </div>
+
+        {/* View More */}
+        <div className="text-center mt-8">
+          <Link
+            to={`/store?category=Occasions&shop=${encodeURIComponent(currentShop)}`}
+            className="inline-block px-6 py-3 rounded-full bg-[#7669c1] text-white hover:bg-purple-700 transition"
+          >
+            View More from {currentShop}
+          </Link>
         </div>
       </section>
     </>

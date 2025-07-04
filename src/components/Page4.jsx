@@ -4,18 +4,15 @@ import toast from "react-hot-toast";
 import { FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useProduct } from "./ProductContext";
-import { useWishlist } from "./WishlistContext"; // ✅ import shared wishlist
+import { useWishlist } from "./WishlistContext"; // ✅ shared wishlist
 
 import choco1 from "../assets/react.svg";
 import choco2 from "../assets/react.svg";
 import choco3 from "../assets/react.svg";
 import choco4 from "../assets/react.svg";
 
-// Simulated API call
-const mockFetch = () =>
-  new Promise((res) =>
-    setTimeout(() => {
-      res([
+// ✅ Simulated API with raw structure
+const defaultItems = [
         {
           title: "Doll House",
           price: 849,
@@ -50,9 +47,7 @@ const mockFetch = () =>
           image: choco4,
           delivery: "Tomorrow",
         },
-      ]);
-    }, 1000)
-  );
+]
 
 export default function Page4() {
   const [items, setItems] = useState([]);
@@ -61,15 +56,35 @@ export default function Page4() {
   const shimmerArray = new Array(4).fill(null);
 
   const { addProducts } = useProduct();
-  const { toggleWishlist, isInWishlist } = useWishlist(); // ✅ use context
+  const { toggleWishlist, isInWishlist } = useWishlist();
 
-  useEffect(() => {
-    mockFetch().then((data) => {
-      setItems(data);
-      setLoading(false);
-      addProducts(data);
+useEffect(() => {
+  // Step 1: show dummy data immediately
+  setItems(defaultItems);
+  setLoading(false);
+  addProducts(defaultItems);
+
+  // Step 2: fetch backend data
+  fetch("https://your-backend.com/api/products?category=Electronics%20%26%20Gadgets")
+    .then((res) => {
+      if (!res.ok) throw new Error("Network error");
+      return res.json();
+    })
+    .then((fetched) => {
+      const withAmount = fetched.map((item) => ({
+        ...item,
+        amount: item.amount ?? item.price,
+      }));
+      setItems(withAmount);
+      addProducts(withAmount);
+    })
+    .catch((err) => {
+      console.error("Failed to fetch backend data:", err.message);
+      // Keep defaultItems visible
     });
-  }, []);
+}, []);
+
+
 
   useEffect(() => {
     const scrollToSelf = () => {
@@ -86,7 +101,7 @@ export default function Page4() {
   }, []);
 
   const handleWishlistToggle = (e, item) => {
-    e.preventDefault(); // stop navigating
+    e.preventDefault();
     toggleWishlist(item);
     toast.success(
       `${isInWishlist(item.slug) ? "Removed from" : "Added to"} Wishlist: ${item.title}`
@@ -103,7 +118,7 @@ export default function Page4() {
         data={loading ? shimmerArray : items}
         selectedItem={selected}
         onSelect={setSelected}
-        viewMoreLink="/products"
+        viewMoreLink="/store?category=Toys%20%26%20Games"
         itemKey={(item, i) => `page4-${item?.slug || `shimmer-${i}`}`}
         renderItem={(item, _, isActive) =>
           !item ? (

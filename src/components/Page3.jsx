@@ -10,47 +10,54 @@ import choco2 from "../assets/react.svg";
 import choco3 from "../assets/react.svg";
 import choco4 from "../assets/react.svg";
 
-const mockFetch = () =>
-  new Promise((res) =>
-    setTimeout(() => {
-      res([
-        {
-          title: "Neckband",
-          price: 849,
-          originalPrice: 999,
-          discount: "15% Off",
-          slug: "neckband",
-          image: choco1,
-          delivery: "Tomorrow",
-        },
-        {
-          title: "Earbuds",
-          price: 799,
-          slug: "earbuds",
-          image: choco2,
-          delivery: "Tomorrow",
-        },
-        {
-          title: "Boat Rockerz 450",
-          price: 2649,
-          originalPrice: 2899,
-          discount: "9% Off",
-          slug: "boat-rockerz-450",
-          image: choco3,
-          delivery: "Tomorrow",
-        },
-        {
-          title: "Power Bank",
-          price: 849,
-          originalPrice: 949,
-          discount: "10% Off",
-          slug: "power-bank",
-          image: choco4,
-          delivery: "Tomorrow",
-        },
-      ]);
-    }, 1000)
-  );
+const defaultItems = [
+  {
+    title: "Neckband",
+    price: 849,
+    originalPrice: 999,
+    discount: "15% Off",
+    slug: "neckband",
+    image: choco1,
+    delivery: "Tomorrow",
+    category: "Electronics & Gadgets",
+    shop: "Accessories",
+    amount: 849,
+  },
+  {
+    title: "Earbuds",
+    price: 799,
+    slug: "earbuds",
+    image: choco2,
+    delivery: "Tomorrow",
+    category: "Electronics & Gadgets",
+    shop: "Accessories",
+    amount: 799,
+  },
+  {
+    title: "Boat Rockerz 450",
+    price: 2649,
+    originalPrice: 2899,
+    discount: "9% Off",
+    slug: "boat-rockerz-450",
+    image: choco3,
+    delivery: "Tomorrow",
+    category: "Electronics & Gadgets",
+    shop: "Accessories",
+    amount: 2649,
+  },
+  {
+    title: "Power Bank",
+    price: 849,
+    originalPrice: 949,
+    discount: "10% Off",
+    slug: "power-bank",
+    image: choco4,
+    delivery: "Tomorrow",
+    category: "Electronics & Gadgets",
+    shop: "Accessories",
+    amount: 849,
+  },
+];
 
 export default function Page3() {
   const [items, setItems] = useState([]);
@@ -62,13 +69,32 @@ export default function Page3() {
 
   const { addProducts } = useProduct();
 
-  useEffect(() => {
-    mockFetch().then((data) => {
-      setItems(data);
-      setLoading(false);
-      addProducts(data);
+useEffect(() => {
+  // Step 1: show dummy data immediately
+  setItems(defaultItems);
+  setLoading(false);
+  addProducts(defaultItems);
+
+  // Step 2: fetch backend data
+  fetch("https://your-backend.com/api/products?category=Electronics%20%26%20Gadgets")
+    .then((res) => {
+      if (!res.ok) throw new Error("Network error");
+      return res.json();
+    })
+    .then((fetched) => {
+      const withAmount = fetched.map((item) => ({
+        ...item,
+        amount: item.amount ?? item.price,
+      }));
+      setItems(withAmount);
+      addProducts(withAmount);
+    })
+    .catch((err) => {
+      console.error("Failed to fetch backend data:", err.message);
+      // Keep defaultItems visible
     });
-  }, []);
+}, []);
+
 
   useEffect(() => {
     const sync = () => {
@@ -119,7 +145,7 @@ export default function Page3() {
         data={loading ? shimmerArray : items}
         selectedItem={selected}
         onSelect={setSelected}
-        viewMoreLink="/products"
+        viewMoreLink="/store?category=Electronics%20%26%20Gadgets"
         itemKey={(item, i) => `page3-${item?.slug || `shimmer-${i}`}`}
         renderItem={(item, _, isActive) =>
           !item ? (
