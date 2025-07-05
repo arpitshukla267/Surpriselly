@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import { useCart } from "../components/CartContext";
 import toast, { Toaster } from "react-hot-toast";
+import { useLocation } from "react-router-dom";
 
 export default function WishlistPage() {
   const [wishlist, setWishlist] = useState([]);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const { addToCart } = useCart();
+  const location = useLocation();
 
   const WISHLIST_KEYS = [
     "wishlist",
@@ -32,6 +34,11 @@ export default function WishlistPage() {
 
     setWishlist(unique);
   };
+
+   useEffect(() => {
+    // Scroll to top whenever location changes (i.e., new category/shop)
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [location]);
 
   useEffect(() => {
     loadWishlist();
@@ -67,7 +74,7 @@ export default function WishlistPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto mt-[5rem] lg:mt-[10rem] py-10 px-4 relative">
+    <div className="max-w-6xl mx-auto mt-[8rem] lg:mt-[10rem] py-10 px-4 relative">
       <Toaster position="top-right" />
 
       {/* Confirmation Modal */}

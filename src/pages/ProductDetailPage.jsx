@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useCart } from "../components/CartContext";
 import toast from "react-hot-toast";
 
@@ -26,7 +26,13 @@ export default function ProductDetailPage() {
   const [product, setProduct] = useState(mockProduct);
   const [userImages, setUserImages] = useState(mockProduct.userImages);
   const [loading, setLoading] = useState(true);
+  const location = useLocation()
 
+   useEffect(() => {
+    // Scroll to top whenever location changes (i.e., new category/shop)
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [location]);
+  
   // ⏳ Simulate backend fetch
   useEffect(() => {
     async function fetchProduct() {

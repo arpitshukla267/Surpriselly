@@ -16,6 +16,13 @@ import { useCart } from "../components/CartContext";
 import { useWishlist } from "../components/WishlistContext";
 import { useProduct } from "../components/ProductContext";
 
+// 🔐 Mock user data (replace with real user state later)
+const user = {
+  isLoggedIn: true, // set to false to test guest view
+  name: "Arpit",
+  avatar: "", // or uploaded avatar URL
+};
+
 const categoriesBottom = [
   "Personalized Gifts",
   "Electronics & Gadgets",
@@ -123,7 +130,6 @@ export default function Nav() {
               </span>
             )}
           </NavLink>
-
           <button className="relative">
             <FaBell className="text-2xl text-purple-700 hover:scale-110 transition" />
             <span className="absolute -top-1 -right-2 h-4 w-4 text-[10px] bg-red-600 text-white rounded-full grid place-content-center">
@@ -175,7 +181,29 @@ export default function Nav() {
         </button>
       </div>
 
-      {/* Bottom strip - Desktop */}
+      {/* 🔍 Mobile Search Bar */}
+      <div className="md:hidden px-4 pb-3">
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+            className="w-full border pl-10 pr-12 py-2 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white"
+          />
+          <FaSearch className="absolute left-3 top-2.5 text-gray-400" />
+          <button
+            onClick={handleSearch}
+            className="absolute right-2 top-2.5 hover:bg-purple-200 text-purple-600 p-1 rounded-full"
+            title="Search"
+          >
+            <FaSearch />
+          </button>
+        </div>
+      </div>
+
+      {/* Desktop Category Strip */}
       <div className="bg-white text-black p-2 font-medium text-sm border-b hidden md:flex">
         <div className="max-w-7xl mx-auto px-6 py-2 flex flex-wrap gap-12">
           {categoriesBottom.map((cat, i) => (
@@ -192,7 +220,7 @@ export default function Nav() {
         </div>
       </div>
 
-      {/* 🔽 Top-down Sliding Mobile Menu */}
+      {/* 🔽 Mobile Dropdown */}
       <div
         className={`fixed top-0 left-0 right-0 z-40 transition-transform duration-300 bg-white shadow-xl ${
           mobileMenuOpen ? "translate-y-0" : "-translate-y-full"
@@ -202,24 +230,6 @@ export default function Nav() {
           <img src={logo} alt="Logo" className="h-10" />
           <button onClick={() => setMobileMenuOpen(false)}>
             <FaTimes className="text-2xl text-purple-700" />
-          </button>
-        </div>
-
-        {/* Search input */}
-        <div className="px-4 py-2">
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            className="w-full border px-3 py-2 rounded focus:outline-purple-600"
-          />
-          <button
-            onClick={handleSearch}
-            className="mt-2 w-full bg-purple-600 text-white py-2 rounded hover:bg-purple-700"
-          >
-            Search
           </button>
         </div>
 
@@ -236,6 +246,63 @@ export default function Nav() {
               {cat}
             </button>
           ))}
+        </div>
+
+        {/* 👤 Profile Section w/ Dynamic Avatar */}
+        <div className="border-t mt-2 pt-4 px-4">
+          <div className="flex items-center gap-3 mb-3">
+            <img
+              src={
+                user.isLoggedIn && user.avatar
+                  ? user.avatar
+                  : "https://api.dicebear.com/7.x/thumbs/svg?seed=guest"
+              }
+              alt="avatar"
+              className="w-10 h-10 rounded-full border"
+            />
+            <div>
+              <p className="font-semibold text-sm text-gray-700">
+                {user.isLoggedIn ? `Welcome, ${user.name}` : "Welcome, Guest!"}
+              </p>
+              <p className="text-xs text-gray-500">
+                {user.isLoggedIn ? "Manage your profile" : "Please login to continue"}
+              </p>
+            </div>
+          </div>
+
+          {user.isLoggedIn ? (
+            <button
+              onClick={() => {
+                // Logout logic
+                console.log("Logging out...");
+                setMobileMenuOpen(false);
+              }}
+              className="w-full text-left px-3 py-2 rounded hover:bg-purple-100"
+            >
+              Logout
+            </button>
+          ) : (
+            <>
+              <button
+                onClick={() => {
+                  navigate("/login");
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full text-left px-3 py-2 rounded hover:bg-purple-100"
+              >
+                Login
+              </button>
+              <button
+                onClick={() => {
+                  navigate("/signup");
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full text-left px-3 py-2 rounded hover:bg-purple-100"
+              >
+                Signup
+              </button>
+            </>
+          )}
         </div>
       </div>
     </header>

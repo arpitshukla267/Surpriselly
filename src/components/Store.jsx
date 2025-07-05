@@ -338,7 +338,7 @@ export default function Store() {
   );
 
   return (
-    <div className="max-w-6xl mt-[5rem] lg:mt-[8rem] mx-auto px-6 py-10">
+    <div className="max-w-6xl mt-[8rem] lg:mt-[8rem] mx-auto px-6 py-10">
       <Toaster position="top-right" />
       <h1 className="text-3xl font-bold text-center mb-6">🛍️ Product Store</h1>
 

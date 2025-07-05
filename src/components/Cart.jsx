@@ -28,7 +28,7 @@ export default function Cart() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10 mt-[5rem] lg:mt-[8rem]">
+    <div className="max-w-7xl mx-auto px-4 py-10 mt-[8rem] lg:mt-[8rem]">
       <h1 className="text-4xl font-bold text-center text-purple-700 mb-10">
         🛒 Your Cart
       </h1>
@@ -46,7 +46,7 @@ export default function Cart() {
           <p className="mt-6 text-gray-500 text-lg">Your cart is empty.</p>
         </div>
       ) : (
-        <div className="grid lg:grid-cols-3 gap-8 relative">
+        <div className="flex flex-col-reverse lg:grid lg:grid-cols-3 gap-8 relative">
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-6">
             <div className="flex justify-between items-center">
@@ -67,7 +67,7 @@ export default function Cart() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.3 }}
-                  className="flex flex-col md:flex-row gap-6 bg-white border rounded-xl shadow hover:shadow-lg transition p-4"
+                  className="flex flex-row gap-10 lg:gap-10 bg-white border rounded-xl shadow hover:shadow-lg transition p-4"
                 >
                   <img
                     src={item.img || "/placeholder.png"}
@@ -75,22 +75,22 @@ export default function Cart() {
                     className="h-28 w-28 rounded-md object-cover border"
                   />
                   <div className="flex-1">
-                    <h3 className="text-lg font-bold">{item.title}</h3>
+                    <h3 className="text-lg font-semibold">{item.title}</h3>
                     <p className="text-purple-600 mt-1">
                       ₹{item.amount} × {item.qty} = ₹{item.amount * item.qty}
                     </p>
-
+                   <div className="flex flex-row justify-between items-center ">
                     <div className="flex items-center mt-3 space-x-2">
                       <button
                         onClick={() => decrementQty(item.slug)}
-                        className="px-3 py-1 rounded-full bg-gray-200 hover:bg-gray-300 text-xl"
+                        className="h-6 w-6 flex justify-center items-center rounded-full bg-gray-200 hover:bg-gray-300 text-xl"
                       >
                         −
                       </button>
                       <span className="text-md font-medium">{item.qty}</span>
                       <button
                         onClick={() => incrementQty(item.slug)}
-                        className="px-3 py-1 rounded-full bg-gray-200 hover:bg-gray-300 text-xl"
+                        className="h-6 w-6 flex justify-center items-center rounded-full bg-gray-200 hover:bg-gray-300 text-xl"
                       >
                         +
                       </button>
@@ -102,6 +102,7 @@ export default function Cart() {
                     >
                       Remove
                     </button>
+                   </div> 
                   </div>
                 </motion.div>
               ))}
@@ -113,7 +114,7 @@ export default function Cart() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-white border rounded-md p-3 shadow-sm sticky top-44 w-full max-w-xs h-fit"
+            className="bg-white backdrop-blur-md shadow-xl rounded-md p-5 sticky top-40 w-full h-fit max-w-xs lg:col-span-1 mx-auto lg:mx-0"
           >
             <h2 className="text-base font-semibold text-gray-800 mb-2">
               Order Summary

@@ -72,7 +72,7 @@ export default function Page1() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center mt-28 px-6 lg:px-0 lg:mt-[10rem] bg-white text-black">
+    <div className="flex flex-col items-center justify-center mt-[10rem] px-6 lg:px-0 lg:mt-[10rem] bg-white text-black">
       {/* ── Hero Section ── */}
       <div
         className="relative w-full max-w-screen-xl overflow-hidden rounded-3xl shadow-lg my-4"
