@@ -59,6 +59,10 @@ export default function ProductDetailPage() {
     toast.success(`${product.title} added to cart! 🛒`);
   };
 
+   const handleCheckout = () => {
+    window.location.href = "https://razorpay.me/@socialoffer";
+  }
+
   // ✅ Image Upload + Preview
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
@@ -140,9 +144,15 @@ export default function ProductDetailPage() {
         </div>
           <button
             onClick={handleAddToCart}
-            className="px-6 py-3 bg-purple-600 hover:bg-purple-700 transition-all text-white rounded-full shadow-md"
+            className="px-6 py-3 bg-purple-600 hover:bg-purple-700 hover:cursor-pointer transition-all text-white rounded-full shadow-md"
           >
             Add to Cart
+          </button>
+          <button
+            onClick={handleCheckout}
+            className="px-6 py-3 mx-5 bg-green-500 hover:bg-green-700 hover:cursor-pointer transition-all text-white rounded-full shadow-md"
+          >
+            Buy Now
           </button>
         </div>
       </div>

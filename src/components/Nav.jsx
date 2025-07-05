@@ -15,13 +15,7 @@ import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useCart } from "../components/CartContext";
 import { useWishlist } from "../components/WishlistContext";
 import { useProduct } from "../components/ProductContext";
-
-// 🔐 Mock user data (replace with real user state later)
-const user = {
-  isLoggedIn: true, // set to false to test guest view
-  name: "Arpit",
-  avatar: "", // or uploaded avatar URL
-};
+import { useAuth } from "../components/AuthContext"; // ✅ import stays here
 
 const categoriesBottom = [
   "Personalized Gifts",
@@ -34,6 +28,8 @@ const categoriesBottom = [
 ];
 
 export default function Nav() {
+  const { user, setUser } = useAuth(); // ✅ FIXED: Hook now inside the component
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
@@ -182,7 +178,7 @@ export default function Nav() {
       </div>
 
       {/* 🔍 Mobile Search Bar */}
-      <div className="md:hidden px-4 pb-3">
+      <div className="md:hidden mt-[-10px] px-4 pb-3">
         <div className="relative">
           <input
             type="text"
@@ -273,8 +269,7 @@ export default function Nav() {
           {user.isLoggedIn ? (
             <button
               onClick={() => {
-                // Logout logic
-                console.log("Logging out...");
+                setUser({ isLoggedIn: false, name: "", avatar: "" });
                 setMobileMenuOpen(false);
               }}
               className="w-full text-left px-3 py-2 rounded hover:bg-purple-100"
