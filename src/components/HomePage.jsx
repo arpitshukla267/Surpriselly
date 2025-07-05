@@ -11,6 +11,7 @@ import Page6 from './Page6'
 import Page7 from './Page7'
 import Page8 from './Page8'
 import EventBanner from './EventBanner'
+import Footer from './Footer'
 
 function HomePage() {
   return (
@@ -27,6 +28,7 @@ function HomePage() {
         <Page7 />
         <EventBanner />
         <Page8 />
+        <Footer />
     </div>
   )
 }
