@@ -12,7 +12,7 @@ import logo from "../assets/logo.png"; // replace with your actual logo
 
 const Footer = () => {
   return (
-    <footer className="bg-[#e6dcfa] mt-[7rem] text-gray-800 py-10 px-4">
+    <footer className="bg-[#e6dcfa] mt-[6rem] text-gray-800 py-10 px-4">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Logo & Description */}
         <div>
@@ -38,7 +38,7 @@ const Footer = () => {
           <ul className="space-y-3 text-sm text-gray-700">
             <li className="flex items-center gap-2"><FaMapMarkerAlt className="text-purple-600" /> Jhansi, UP, India</li>
             <li className="flex items-center gap-2"><FaPhoneAlt className="text-purple-600" /> +91-9236553585</li>
-            <li className="flex items-center gap-2"><FaEnvelope className="text-purple-600" /> yourmail@example.com</li>
+            <li className="flex items-center gap-2"><FaEnvelope className="text-purple-600" /> mail@gmail.com</li>
           </ul>
         </div>
 

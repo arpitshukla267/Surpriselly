@@ -72,10 +72,10 @@ export default function Page1() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center mt-[10rem] px-6 lg:px-0 lg:mt-[10rem] bg-white text-black">
+    <div className="flex flex-col items-center justify-center mt-[8rem] px-6 lg:px-0 lg:mt-[9rem] bg-white text-black">
       {/* ── Hero Section ── */}
       <div
-        className="relative w-full max-w-screen-xl overflow-hidden rounded-3xl shadow-lg my-4"
+        className="relative w-full max-w-screen-xl mb-8 lg:mb-5 md:mb-5 overflow-hidden rounded-3xl shadow-lg my-4"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
         onTouchStart={handleTouchStart}
@@ -137,7 +137,7 @@ export default function Page1() {
       </div>
 
       {/* ── Scrollable Category Bar ── */}
-      <div className="relative mt-6 w-full max-w-screen-xl">
+      <div className="relative mt-6 w-full pb-14 max-w-screen-xl">
         <div className="flex items-center relative">
           <button
             onClick={() => scrollCategories("left")}

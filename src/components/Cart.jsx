@@ -28,7 +28,7 @@ export default function Cart() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10 mt-[8rem] lg:mt-[8rem]">
+    <div className="max-w-7xl mx-auto px-4 py-10 mt-[5rem] lg:mt-[8rem]">
       <h1 className="text-4xl font-bold text-center text-purple-700 mb-10">
         🛒 Your Cart
       </h1>

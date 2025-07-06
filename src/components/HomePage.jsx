@@ -28,7 +28,6 @@ function HomePage() {
         <Page7 />
         <EventBanner />
         <Page8 />
-        <Footer />
     </div>
   )
 }
