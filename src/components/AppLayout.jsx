@@ -1,10 +1,10 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Outlet } from "react-router-dom";
 import Nav from "./Nav";
 import Footer from "./Footer";
 import FloatingButtons from "./FloatingButtons";
 
-export default function AppLayout({ children }) {
+export default function AppLayout() {
   const location = useLocation();
   const hidePaths = ["/login", "/signup"];
   const shouldHideNav = hidePaths.includes(location.pathname);
@@ -13,7 +13,9 @@ export default function AppLayout({ children }) {
     <>
       {!shouldHideNav && <Nav />}
       <FloatingButtons />
-      <main className="pt-16">{children}</main>
+      <main className="pt-16">
+        <Outlet /> {/* ✅ renders the matched route here */}
+      </main>
       {!shouldHideNav && <Footer />}
     </>
   );
