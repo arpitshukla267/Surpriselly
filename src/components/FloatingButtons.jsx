@@ -18,7 +18,7 @@ export default function FloatingButtons() {
   return (
     <>
       {/* Wishlist Button - Bottom Left */}
-      <div className="md:hidden fixed bottom-6 left-5 z-50">
+      {/* <div className="md:hidden fixed bottom-6 left-5 z-50">
         <Link
           to="/wishlist"
           className="relative w-14 h-14 flex items-center justify-center bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-lg transition duration-300"
@@ -32,7 +32,7 @@ export default function FloatingButtons() {
         </Link>
       </div>
 
-      {/* Cart Button - Bottom Right */}
+      {/* Cart Button - Bottom Right 
       <div className="md:hidden fixed bottom-6 right-5 z-50">
         <Link
           to="/cart"
@@ -45,7 +45,7 @@ export default function FloatingButtons() {
             </span>
           )}
         </Link>
-      </div>
+      </div> */}
     </>
   );
 }

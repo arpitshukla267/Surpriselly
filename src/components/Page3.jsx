@@ -158,13 +158,13 @@ useEffect(() => {
           ) : (
             <Link
               to={`/product/${item.slug}`}
-              className="relative group block p-3 h-[300px] flex flex-col justify-between bg-white rounded-lg shadow hover:shadow-lg transition"
+              className="relative group  p-3 h-[300px] flex flex-col bg-white rounded-lg shadow hover:shadow-lg transition"
               onClick={() => setSelected(item)}
             >
               <img
                 src={item.image}
                 alt={item.title}
-                className="w-full h-44 object-cover rounded-lg"
+                className="w-full h-24 md:h-44 object-contain rounded-lg"
               />
               <button
                 className="absolute top-3 right-3 bg-white p-1.5 rounded-full shadow group-hover:scale-105 transition"
@@ -181,11 +181,12 @@ useEffect(() => {
                   }`}
                 />
               </button>
-              <div className="mt-2">
+
+             <div className="mt-4 md:mt-8 flex flex-col justify-between overflow-hidden">
                 <h3 className="text-sm font-medium text-gray-800 line-clamp-2">
                   {item.title}
                 </h3>
-                <div className="flex items-center gap-2 mt-1">
+                <div className="flex flex-row items-center gap-2 md:mt-1">
                   <span className="text-green-700 font-semibold text-base">
                     ₹ {item.price}
                   </span>
@@ -194,14 +195,15 @@ useEffect(() => {
                       <span className="line-through text-sm text-gray-500">
                         ₹ {item.originalPrice}
                       </span>
-                      <span className="text-xs text-green-600 font-medium">
+                      <span className="hidden md:flex text-xs text-green-600 font-medium">
                         {item.discount}
                       </span>
                     </>
                   )}
                 </div>
-                <p className="text-xs text-gray-500 mt-1">
-                  Delivery: <span className="text-green-600 font-medium">{item.delivery}</span>
+                <p className="hidden md:flex text-xs text-gray-500 mt-1">
+                  Delivery:{" "}
+                  <span className="text-green-600 font-medium">{item.delivery}</span>
                 </p>
               </div>
             </Link>

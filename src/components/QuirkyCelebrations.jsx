@@ -27,7 +27,7 @@ export default function QuirkyCelebrations() {
   return (
     <section className="px-4 sm:px-6 md:px-8 bg-purple-50 py-10 max-w-7xl mx-auto">
       <h2 className="text-xl sm:text-2xl font-semibold mb-6">
-        Quirky Celebrations
+        Genz Special
       </h2>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-6">

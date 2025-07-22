@@ -1,7 +1,27 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FaChevronLeft, FaChevronRight, FaBaby } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { GiGiftOfKnowledge, GiClothes, GiTechnoHeart, GiHomeGarage, GiFruitBowl, GiFlowers, GiChocolateBar, GiPlantSeed } from "react-icons/gi";
+import {
+  GiGiftOfKnowledge,
+  GiClothes,
+  GiTechnoHeart,
+  GiHomeGarage,
+  GiFruitBowl,
+  GiFlowers,
+  GiChocolateBar,
+  GiPlantSeed,
+} from "react-icons/gi";
+import hamper from "../assets/hamper.jpeg";
+import sameDay from "../assets/sameDay.jpeg";
+import cakes from "../assets/cakes.jpeg";
+import combos from "../assets/combos.jpeg";
+import flowers from "../assets/flowers.jpeg";
+import plants from "../assets/plants.jpeg";
+import personlizedGifts from "../assets/personlizedGifts.jpeg";
+import handMade from "../assets/handMade.jpeg";
+import foods from "../assets/foods.jpeg";
+import festivals from "../assets/festivals.jpeg";
+import banner1 from "../assets/banner-1.jpeg";
 
 const slides = [
   {
@@ -14,7 +34,7 @@ const slides = [
     id: 2,
     heading: "Make Someone Smile with a Surprise Delivery",
     sub: "Fast & Reliable",
-    img: "https://images.unsplash.com/photo-1606787360230-2f8b1c3d4e5f?w=600&auto=format&fit=crop&q=60",
+    img: banner1,
   },
   {
     id: 3,
@@ -30,9 +50,24 @@ const categories = [
   { title: "Electronics & Gadgets", icon: <GiTechnoHeart /> },
   { title: "Home & Decor", icon: <GiHomeGarage /> },
   { title: "Combo Baskets", icon: <GiFruitBowl /> },
-  { title: "Toys & Games", icon: <FaBaby /> }, // replaced icon here
+  { title: "Toys & Games", icon: <FaBaby /> },
 ];
 
+const block = [
+  { label: "Birthday", img: cakes },
+  { label: "Combos", img:  combos},
+  { label: "Hampers", img: hamper },
+  { label: "Flowers", img: flowers },
+  { label: "Plants", img: plants },
+];
+
+const block2 = [
+  { label: "Festivals", img:festivals },
+  { label: "Handmade", img: handMade },
+  { label: "Sameday Delivery", img: sameDay },
+  { label: "Personlized Gifts", img: personlizedGifts },
+  {label: "Foods", img: foods },
+];
 
 export default function Page1() {
   const [current, setCurrent] = useState(0);
@@ -72,10 +107,50 @@ export default function Page1() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center mt-[8rem] px-6 lg:px-0 lg:mt-[9rem] bg-white text-black">
+    <div className="flex flex-col items-center justify-center mt-[6rem] px-4 lg:px-0 lg:mt-[9rem] bg-white text-black">
+      
+      {/* ✅ Fixed Horizontal Scroll Section */}
+      {/* ✅ Fixed Horizontal Scroll Section with Real Names */}
+      <div className="md:hidden w-full overflow-x-auto mt-5 mb-4 flex flex-col  scrollbar-hide">
+        <div className="flex flex-nowrap gap-4 px-0 py-2 w-max">
+          {block.map((block, idx) => (
+            <div
+              key={idx}
+              className="flex flex-col items-center min-w-[96px] mt-[2rem]"
+            >
+              <img
+                src={block.img}
+                className="h-20 w-20 object-cover rounded-2xl"
+                alt={block.label}
+              />
+              <span className="text-sm mt-3 text-center break-words w-[80px]">
+                {block.label}
+              </span>
+            </div>
+          ))}
+        </div>
+        <div className="flex flex-nowrap gap-4 px-0 py-4 w-max mt-[-2rem]">
+          {block2.map((block2, idx) => (
+            <div
+              key={idx}
+              className="flex flex-col items-center min-w-[96px] mt-[2rem]"
+            >
+                <img
+                  src={block2.img}
+                  className="h-20 w-20 object-cover rounded-2xl"
+                />
+                <span className="text-sm mt-3 text-center break-words w-[80px]">
+                  {block2.label}
+                </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+
       {/* ── Hero Section ── */}
       <div
-        className="relative w-full max-w-screen-xl mb-8 lg:mb-5 md:mb-5 overflow-hidden rounded-3xl shadow-lg my-4"
+        className="relative w-full max-w-screen-xl mb-8 lg:mb-5 md:mb-5 overflow-hidden rounded-3xl shadow-lg my-0"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
         onTouchStart={handleTouchStart}
@@ -94,7 +169,7 @@ export default function Page1() {
                 backgroundPosition: "center",
               }}
             >
-              <div className="bg-black/40 w-full h-full flex items-center justify-start px-4 sm:px-10 rounded-3xl">
+              <div className="bg-black/40 w-full h-full flex items-center justify-start px-14 rounded-3xl">
                 <div className="max-w-md text-white space-y-2 sm:space-y-3 animate-slide-text">
                   <h2 className="text-xl sm:text-2xl md:text-4xl font-bold">
                     {slide.heading}
@@ -109,21 +184,19 @@ export default function Page1() {
           ))}
         </div>
 
-        {/* Arrows */}
         <button
           onClick={prevSlide}
-          className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-20 rounded-full bg-white/70 p-2 shadow-md hover:bg-white"
+          className="hidden md:flex absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-20 rounded-full bg-white/70 p-2 shadow-md hover:bg-white"
         >
           <FaChevronLeft />
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-20 rounded-full bg-white/70 p-2 shadow-md hover:bg-white"
+          className="hidden md:flex absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-20 rounded-full bg-white/70 p-2 shadow-md hover:bg-white"
         >
           <FaChevronRight />
         </button>
 
-        {/* Indicators */}
         <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-2">
           {slides.map((_, i) => (
             <div
@@ -137,18 +210,18 @@ export default function Page1() {
       </div>
 
       {/* ── Scrollable Category Bar ── */}
-      <div className="relative mt-6 w-full pb-14 max-w-screen-xl">
+      <div className="relative md:mt-6 mt-0 md:ml-10 w-full pb-14 max-w-screen-xl mb-[-2rem]">
         <div className="flex items-center relative">
           <button
             onClick={() => scrollCategories("left")}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-gray-100 p-2 rounded-full shadow hover:bg-white"
+            className="hidden md:flex absolute left-[-2rem] top-1/2 -translate-y-1/2 z-10 bg-gray-100 p-2 rounded-full shadow hover:bg-white"
           >
             <FaChevronLeft />
           </button>
 
           <div
             ref={categoryRef}
-            className="flex overflow-x-auto gap-4 px-10 py-4 scroll-smooth scrollbar-hide w-full"
+            className="flex overflow-x-auto gap-10 md:gap-4 px-2 py-4 scroll-smooth scrollbar-hide w-full"
           >
             {categories.map((cat, index) => (
               <Link
@@ -160,17 +233,19 @@ export default function Page1() {
                 key={index}
                 className="flex flex-col items-center text-center min-w-[70px] sm:min-w-[90px] hover:scale-105 hover:text-purple-700 transition-transform"
               >
-                <div className="h-14 w-14 sm:h-20 sm:w-20 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center text-xl sm:text-2xl shadow-md">
+                <div className="h-22 w-22 md:h-34 md:w-34 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center text-xl sm:text-2xl shadow-md">
                   {cat.icon}
                 </div>
-                <p className="mt-2 text-xs font-semibold whitespace-wrap">{cat.title}</p>
+                <p className="mt-2 text-xs font-semibold whitespace-wrap">
+                  {cat.title}
+                </p>
               </Link>
             ))}
           </div>
 
           <button
             onClick={() => scrollCategories("right")}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-gray-100 p-2 rounded-full shadow hover:bg-white"
+            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-gray-100 p-2 rounded-full shadow hover:bg-white"
           >
             <FaChevronRight />
           </button>

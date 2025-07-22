@@ -12,6 +12,9 @@ import Page7 from './Page7'
 import Page8 from './Page8'
 import EventBanner from './EventBanner'
 import Footer from './Footer'
+import BottomBar from './BottomBar'
+import LuxuryItems from './LuxuryItems'
+import BestSeller from './BestSeller'
 
 function HomePage() {
   return (
@@ -19,6 +22,8 @@ function HomePage() {
         <Nav />
         <Page1 />
         <Categories />
+        <LuxuryItems />
+        <BestSeller />
         <Page2 /> 
         <Page3 />
         <QuirkyCelebrations />
@@ -28,6 +33,7 @@ function HomePage() {
         <Page7 />
         <EventBanner />
         <Page8 />
+        <BottomBar/>
     </div>
   )
 }

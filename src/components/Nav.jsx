@@ -10,6 +10,7 @@ import {
   FaBars,
   FaTimes,
   FaUser,
+  FaSearchLocation,
 } from "react-icons/fa";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useCart } from "../components/CartContext";
@@ -40,6 +41,20 @@ export default function Nav() {
   const location = useLocation();
   const currentCategoryRaw = new URLSearchParams(location.search).get("category") || "";
   const currentCategory = decodeURIComponent(currentCategoryRaw).trim();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // scroll to top on mount
+
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50); // you can adjust threshold
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
 
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
@@ -69,12 +84,20 @@ export default function Nav() {
   };
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-white text-black shadow-md">
+    <header className={`fixed top-0 left-0 w-full z-50 pb-1 md:pb-3 bg-white text-black scrolled ? "h-10 md:h-14" : "h-16 md:h-20"}`}>
+      <header className="w-full h-7 bg-black"></header>
       {/* Top Row */}
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-        <a href="/" className="flex items-center gap-2 shrink-0">
+        <a href="/" className="hidden md:flex items-center gap-2 shrink-0">
           <img src={logo} alt="Logo" className="h-14" />
         </a>
+         <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="md:hidden text-purple-700 text-2xl mb-8 mt-7"
+        >
+          {mobileMenuOpen ? <FaTimes /> : <FaBars />}
+        </button>
+
 
         {/* Search bar - Desktop */}
         <div className="hidden md:flex flex-1 mx-6">
@@ -85,9 +108,9 @@ export default function Nav() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-              className="w-full pl-12 pr-12 py-2.5 rounded-full border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white"
+              className="w-full pl-12 pr-12 py-2.5 rounded-full border-gray-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white"
             />
-            <FaSearch className="absolute left-4 top-3.5 text-gray-400" />
+            {/* <FaSearch className="absolute left-4 top-4 text-gray-400" /> */}
             <button
               onClick={handleSearch}
               className="absolute right-3 top-2.5 hover:bg-purple-200 text-purple-600 p-1.5 rounded-full"
@@ -168,13 +191,54 @@ export default function Nav() {
           </div>
         </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         {/* Mobile Menu Button */}
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden text-purple-700 text-2xl"
-        >
-          {mobileMenuOpen ? <FaTimes /> : <FaBars />}
-        </button>
+        <div className="md:hidden flex justify-between items-center gap-6 mb-8 mt-6">
+          <FaMapMarkerAlt className="text-2xl text-purple-600" />
+          <NavLink to="/wishlist" className="relative">
+            <FaHeart className="text-2xl text-purple-700 hover:text-red-600" />
+            {wishlist.length > 0 && (
+              <span className="absolute -top-1 -right-2 text-xs bg-red-600 text-white rounded-full h-5 w-5 grid place-content-center">
+                {wishlist.length}
+              </span>
+            )}
+          </NavLink>
+          <NavLink to="/cart" className="relative">
+            <FaShoppingCart className="text-2xl text-purple-700 hover:text-green-600" />
+            {cart.length > 0 && (
+              <span className="absolute -top-1 -right-2 text-xs bg-red-600 text-white rounded-full h-5 w-5 grid place-content-center">
+                {cart.reduce((sum, item) => sum + item.qty, 0)}
+              </span>
+            )}
+          </NavLink>       
+        </div>
       </div>
 
       {/* 🔍 Mobile Search Bar */}
@@ -186,12 +250,12 @@ export default function Nav() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            className="w-full border pl-10 pr-12 py-2 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white"
+            className="w-full border-[1px] border-gray-100 pl-10 pr-12 py-4 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white"
           />
-          <FaSearch className="absolute left-3 top-2.5 text-gray-400" />
+          {/* <FaSearch className="absolute left-3 top-2.5 text-gray-400" /> */}
           <button
             onClick={handleSearch}
-            className="absolute right-2 top-2.5 hover:bg-purple-200 text-purple-600 p-1 rounded-full"
+            className="absolute right-2 top-4 hover:bg-purple-200 text-purple-600 p-1 rounded-full"
             title="Search"
           >
             <FaSearch />
@@ -223,7 +287,9 @@ export default function Nav() {
         }`}
       >
         <div className="flex justify-between items-center px-4 py-4 border-b">
+         <a href="/" className="flex items-center gap-2">
           <img src={logo} alt="Logo" className="h-10" />
+         </a> 
           <button onClick={() => setMobileMenuOpen(false)}>
             <FaTimes className="text-2xl text-purple-700" />
           </button>

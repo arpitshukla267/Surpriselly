@@ -1,9 +1,5 @@
 @import 'tailwindcss';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @layer utilities {
   @keyframes fadeIn {
     from {
@@ -70,4 +66,19 @@ html {
 
 .animate-slide-text {
   animation: slideTextIn 0.8s ease-out;
+}
+
+/* Hide horizontal scrollbar */
+::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.quando-regular {
+  font-family: "Quando", serif;
+  font-weight: 400;
+  font-style: normal;
 }

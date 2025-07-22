@@ -338,7 +338,7 @@ export default function Store() {
   );
 
   return (
-    <div className="max-w-6xl mt-[5rem] lg:mt-[5rem] mx-auto px-6 py-10">
+    <div className="max-w-6xl mt-[7rem] lg:mt-[6rem] mx-auto px-6 py-10">
       <Toaster position="top-right" />
       <h1 className="text-3xl font-bold text-center mb-6">🛍️ Product Store</h1>
 
@@ -394,7 +394,7 @@ export default function Store() {
         </div>
       </div>
 
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {paginatedProducts.length === 0 ? (
           <p className="col-span-full text-center">No matching products.</p>
         ) : (
@@ -403,7 +403,7 @@ export default function Store() {
             return (
               <div
                 key={item.slug}
-                className="bg-white rounded-2xl shadow-xl p-4 hover:shadow-2xl transition-all duration-300 relative"
+                className="bg-white rounded-xl shadow p-4 flex flex-col justify-between min-h-[300px]"
               >
                 <img
                   src={item.image || item.img}
@@ -430,7 +430,7 @@ export default function Store() {
                     addToCart(item);
                     toast.success(`${item.title} added to cart!`);
                   }}
-                  className="mt-4 w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-full"
+                  className="mt-4 w-full bottom-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-full"
                 >
                   Add to Cart
                 </button>

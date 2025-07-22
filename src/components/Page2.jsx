@@ -4,7 +4,6 @@ import toast from "react-hot-toast";
 import { FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useProduct } from "./ProductContext";
-import { useCart } from "./CartContext";
 
 import choco1 from "../assets/react.svg";
 import choco2 from "../assets/react.svg";
@@ -60,7 +59,6 @@ const defaultItems = [
   },
 ];
 
-
 export default function Page2() {
   const [items, setItems] = useState(defaultItems);
   const [selected, setSelected] = useState(null);
@@ -70,30 +68,26 @@ export default function Page2() {
 
   const { addProducts } = useProduct();
 
- useEffect(() => {
-  // Immediately show default items
-  setItems(defaultItems);
+  useEffect(() => {
+    setItems(defaultItems);
 
-  // Then try to fetch real items from backend
-  fetch("https://your-backend.com/api/products?shop=Combos")
-    .then((res) => {
-      if (!res.ok) throw new Error("Network error");
-      return res.json();
-    })
-    .then((fetched) => {
-      const withAmount = fetched.map((item) => ({
-        ...item,
-        amount: item.amount ?? item.price,
-      }));
-      setItems(withAmount);
-      addProducts(withAmount);
-    })
-    .catch((err) => {
-      console.error("Failed to fetch from backend:", err.message);
-      // Do nothing — keep showing defaultItems
-    });
-}, []);
-
+    fetch("https://your-backend.com/api/products?shop=Combos")
+      .then((res) => {
+        if (!res.ok) throw new Error("Network error");
+        return res.json();
+      })
+      .then((fetched) => {
+        const withAmount = fetched.map((item) => ({
+          ...item,
+          amount: item.amount ?? item.price,
+        }));
+        setItems(withAmount);
+        addProducts(withAmount);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch from backend:", err.message);
+      });
+  }, []);
 
   useEffect(() => {
     const sync = () => {
@@ -135,7 +129,7 @@ export default function Page2() {
   return (
     <div
       id="page2-section"
-      className="bg-purple-50 py-12 mb-[-6rem] px-4 sm:px-6 lg:px-8"
+      className="bg-purple-50 py-12 mb-[-9rem] md:mb-[-6rem] px-4 sm:px-6 lg:px-8"
     >
       <Cards
         title="Combos & Baskets"
@@ -148,34 +142,37 @@ export default function Page2() {
           !item ? null : (
             <Link
               to={`/product/${item.slug}`}
-              className="relative group block p-3 h-[300px] flex flex-col justify-between bg-white rounded-lg shadow hover:shadow-lg transition"
+              className="relative group p-3 h-[300px] flex flex-col bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden"
               onClick={() => setSelected(item)}
             >
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-full h-44 object-cover rounded-lg"
-              />
-              <button
-                className="absolute top-3 right-3 bg-white p-1.5 rounded-full shadow group-hover:scale-105 transition"
-                onClick={(e) => {
-                  e.preventDefault();
-                  toggleWishlist(item);
-                }}
-              >
-                <FaHeart
-                  className={`text-sm transition ${
-                    isInWishlist(item.slug)
-                      ? "text-red-500"
-                      : "text-gray-400 hover:text-red-500"
-                  }`}
+              <div className="relative">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-24 md:h-44 object-contain rounded-lg"
                 />
-              </button>
-              <div className="mt-2">
+                <button
+                  className="absolute top-0 right-1 bg-white p-1.5 rounded-full shadow group-hover:scale-105 transition"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    toggleWishlist(item);
+                  }}
+                >
+                  <FaHeart
+                    className={`text-sm transition ${
+                      isInWishlist(item.slug)
+                        ? "text-red-500"
+                        : "text-gray-400 hover:text-red-500"
+                    }`}
+                  />
+                </button>
+              </div>
+
+              <div className="mt-4 md:mt-8 flex flex-col justify-between overflow-hidden">
                 <h3 className="text-sm font-medium text-gray-800 line-clamp-2">
                   {item.title}
                 </h3>
-                <div className="flex items-center gap-2 mt-1">
+                <div className="flex flex-row items-center gap-2 md:mt-1">
                   <span className="text-green-700 font-semibold text-base">
                     ₹ {item.price}
                   </span>
@@ -184,14 +181,15 @@ export default function Page2() {
                       <span className="line-through text-sm text-gray-500">
                         ₹ {item.originalPrice}
                       </span>
-                      <span className="text-xs text-green-600 font-medium">
+                      <span className="hidden md:flex text-xs text-green-600 font-medium">
                         {item.discount}
                       </span>
                     </>
                   )}
                 </div>
-                <p className="text-xs text-gray-500 mt-1">
-                  Delivery: <span className="text-green-600 font-medium">{item.delivery}</span>
+                <p className="hidden md:flex text-xs text-gray-500 mt-1">
+                  Delivery:{" "}
+                  <span className="text-green-600 font-medium">{item.delivery}</span>
                 </p>
               </div>
             </Link>
