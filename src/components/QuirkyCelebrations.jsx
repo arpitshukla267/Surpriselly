@@ -25,27 +25,27 @@ const quirkyItems = [
 
 export default function QuirkyCelebrations() {
   return (
-    <section className="px-4 sm:px-6 md:px-8 bg-purple-50 py-10 max-w-7xl mx-auto">
-      <h2 className="text-xl sm:text-2xl font-semibold mb-6">
+    <section className="px-0 md:px-8 bg-purple-50 py-10 max-w-7xl mx-auto">
+      <h2 className="text-xl ml-8 sm:text-2xl font-bold mb-6">
         Genz Special
       </h2>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-6">
+      <div className="flex flex-wrap justify-center md:grid md:grid-cols-5 gap-0 md:gap-6">
         {quirkyItems.map((item, i) => (
           <div
             key={i}
             className={`
               ${item.bg}
-              rounded-2xl overflow-hidden transition-transform hover:scale-105
+              lg:rounded-2xl w-[45vw] md:w-auto overflow-hidden transition-transform hover:scale-105
               flex flex-col items-center justify-between
               ${i === quirkyItems.length - 1 ? "md:col-span-2" : ""}
             `}
           >
-            <div className="p-0 w-full flex justify-center items-center">
+            <div className="px-2 w-full flex justify-center items-center">
               <img
                 src={item.image}
                 alt={item.title}
-                className="w-24 sm:w-28 md:w-full h-40 sm:h-44 md:h-48 object-fit"
+                className="w-full sm:w-28 md:w-full h-40 sm:h-44 md:h-48 object-fit"
               />
             </div>
             <div className="text-center py-4 text-sm font-medium">

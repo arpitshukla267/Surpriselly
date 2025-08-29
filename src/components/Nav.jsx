@@ -17,6 +17,7 @@ import { useCart } from "../components/CartContext";
 import { useWishlist } from "../components/WishlistContext";
 import { useProduct } from "../components/ProductContext";
 import { useAuth } from "../components/AuthContext"; // ✅ import stays here
+import SearchBar from "./ui/SearchBar";
 
 const categoriesBottom = [
   "Personalized Gifts",
@@ -71,12 +72,31 @@ export default function Nav() {
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
-  const handleSearch = () => {
-    if (searchTerm.trim()) {
-      navigate(`/store?search=${encodeURIComponent(searchTerm.trim())}`);
-      setMobileMenuOpen(false);
-    }
-  };
+const handleSearch = () => {
+  const term = searchTerm.trim().toLowerCase();
+  if (!term) return;
+
+  // Find matching products
+  const matches = allProducts.filter(
+    (p) =>
+      p.title.toLowerCase().includes(term) ||
+      p.slug.toLowerCase().includes(term)
+  );
+
+  if (matches.length === 1) {
+    // ✅ Directly open Product Detail Page
+    navigate(`/product/${matches[0].slug}`);
+  } else if (matches.length > 1) {
+    // ✅ Multiple matches → go to Store page
+    navigate(`/store?search=${encodeURIComponent(searchTerm.trim())}`);
+  } else {
+    // ❌ No matches
+    toast.error("No products found!");
+  }
+
+  setMobileMenuOpen(false);
+};
+
 
   const handleCategoryClick = (cat) => {
     navigate(`/store?category=${encodeURIComponent(cat.trim())}`);
@@ -100,27 +120,9 @@ export default function Nav() {
 
 
         {/* Search bar - Desktop */}
-        <div className="hidden md:flex flex-1 mx-6">
-          <div className="relative w-full max-w-md group">
-            <input
-              type="text"
-              placeholder="Search for products..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-              className="w-full pl-6 pr-12 py-2.5 rounded-full border-gray-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white"
-            />
-            {/* <FaSearch className="absolute left-4 top-4 text-gray-400" /> */}
-            <button
-              onClick={handleSearch}
-              className="absolute right-3 top-2.5 hover:bg-purple-200 text-purple-600 p-1.5 rounded-full"
-              title="Search"
-            >
-              <FaSearch />
-            </button>
-          </div>
+        <div className="hidden md:block flex-1 mx-6">
+          <SearchBar />
         </div>
-
         {/* Icons - Desktop */}
         <div className="hidden md:flex items-center gap-6">
           <button
@@ -243,24 +245,7 @@ export default function Nav() {
 
       {/* 🔍 Mobile Search Bar */}
       <div className="md:hidden mt-[-10px] px-4 pb-3">
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            className="w-full border-[1px] border-gray-100 pl-10 pr-12 py-4 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white"
-          />
-          {/* <FaSearch className="absolute left-3 top-2.5 text-gray-400" /> */}
-          <button
-            onClick={handleSearch}
-            className="absolute right-2 top-4 hover:bg-purple-200 text-purple-600 p-1 rounded-full"
-            title="Search"
-          >
-            <FaSearch />
-          </button>
-        </div>
+          <SearchBar />
       </div>
 
       {/* Desktop Category Strip */}

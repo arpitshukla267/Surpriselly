@@ -82,8 +82,8 @@ export default function LuxuryItems() {
               className="w-full h-40 object-cover rounded-xl mb-2"
             />
             <div className="text-center">
-              <h3 className="font-semibold text-lg text-gray-900">{item.name}</h3>
-              <p className="text-green-700 font-bold mt-1">₹ {item.price}</p>
+              <h3 className="font-semibold lg:text-lg text-sm text-gray-900 text-left">{item.title}</h3>
+              <p className="text-green-700 lg:font-bold font-semibold text-left mt-1">₹ {item.price}</p>
             </div>
           </Link>
         ))}

@@ -1,0 +1,60 @@
+const occasionProducts = [
+  {
+    title: "Angelic Rose Bouquet N Black Forest Birthday Bliss",
+    price: 949,
+    originalPrice: 999,
+    slug: "angelic-rose-birthday-bliss",
+    image: "https://www.fnp.com/images/pr/l/v20221201183812/angelic-rose-bouquet-n-black-forest-birthday-bliss_1.jpg",
+    category: "Occasions",
+    shop: "Birthday",
+    amount: 949,
+  },
+  {
+    title: "Golden Glow Sansevieria Birthday Planter",
+    price: 899,
+    slug: "golden-glow-sansevieria",
+    image: "https://www.fnp.com/images/pr/l/v20211210124700/golden-glow-sansevieria-birthday-planter_1.jpg",
+    category: "Occasions",
+    shop: "Birthday",
+    amount: 899,
+  },
+  {
+    title: "Anniversary Chocolate Box",
+    price: 599,
+    slug: "anniversary-chocolate-box",
+    image: "https://i.pinimg.com/736x/34/14/93/341493f75d0c7fe0406a2661bdc06f72.jpg",
+    category: "Occasions",
+    shop: "Anniversary",
+    amount: 599,
+  },
+  {
+    title: "Thank You Succulent Gift Box",
+    price: 499,
+    slug: "thank-you-succulent-box",
+    image: "https://i.pinimg.com/1200x/54/88/2e/54882eec1251d92ad1d447b1c640eb99.jpg",
+    category: "Occasions",
+    shop: "Thank You",
+    amount: 499,
+  },
+  {
+    title: "Red Roses & Heart Shaped Cake",
+    price: 1299,
+    slug: "red-roses-heart-cake",
+    image: "https://i.pinimg.com/736x/d3/48/88/d3488813661464fa7e7f067dcb673562.jpg",
+    category: "Occasions",
+    shop: "Love Once",
+    amount: 1299,
+  },
+  {
+    title: "Congrats Flowers & Card",
+    price: 749,
+    slug: "congrats-flowers-card",
+    image: "https://i.pinimg.com/736x/d4/67/1b/d4671bc0b22ea1970824174896b70481.jpg",
+    category: "Occasions",
+    shop: "Congratulations",
+    amount: 749,
+  },
+
+];
+
+export { occasionProducts };

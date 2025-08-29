@@ -111,7 +111,7 @@ export default function Page2() {
   return (
     <div
       id="page2-section"
-      className="bg-purple-50 py-12 mb-[-6rem] px-4 sm:px-6 lg:px-8"
+      className="bg-purple-50 py-12 mb-[-6rem] px-0 lg:px-4 lg:px-8"
     >
       <Cards
         title="Combos & Baskets"

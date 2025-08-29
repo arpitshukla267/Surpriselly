@@ -7,12 +7,6 @@ import { useCart } from "../components/CartContext";
 import { useWishlist } from "../components/WishlistContext";
 import { useProduct } from "../components/ProductContext";
 import toast, { Toaster } from "react-hot-toast";
-
-
-import choco1 from "../assets/react.svg";
-import choco2 from "../assets/react.svg";
-import choco3 from "../assets/react.svg";
-import choco4 from "../assets/react.svg";
 import Filters from "./ui/Filters";
 
 const page2Products = [
@@ -265,14 +259,7 @@ export default function Store() {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { allProducts } = useProduct();
-
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
-  const [maxPrice, setMaxPrice] = useState(20000);
-  const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 6;
-
+  const [sortRange, setSortRange] = useState(null);
   const allCombinedRaw = [
     ...allProducts,
     ...page2Products,
@@ -281,6 +268,15 @@ export default function Store() {
     ...dummyProducts,
     ...occasionProducts,
   ];
+
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
+  const [maxPrice, setMaxPrice] = useState(20000);
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 6;
+
 
   const combinedProducts = [...new Map(allCombinedRaw.map(p => [p.slug, p])).values()];
 
@@ -318,17 +314,37 @@ export default function Store() {
 
   const subcategories = subcategoryMap[selectedCategory] || [];
 
-  const filtered = combinedProducts.filter((item) => {
-    const matchesCategory =
-      selectedCategory === "All" ||
-      (item.category === selectedCategory &&
-        (!selectedSubcategory || item.shop === selectedSubcategory));
+// Base filtered list
+let filtered = combinedProducts.filter((item) => {
+  const price = item.price || item.amount; // use whichever field your products have
 
-    const matchesSearch = item.title?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesPrice = (item.price || item.amount) <= maxPrice;
+  const matchesCategory =
+    selectedCategory === "All" ||
+    (item.category === selectedCategory &&
+      (!selectedSubcategory || item.shop === selectedSubcategory));
 
-    return matchesCategory && matchesSearch && matchesPrice;
-  });
+  const matchesSearch = item.title?.toLowerCase().includes(searchTerm.toLowerCase());
+  const matchesPrice = price <= maxPrice;
+
+  // ✅ new check for sortRange
+  const matchesSortRange =
+    !sortRange ||
+    (price >= sortRange[0] &&
+      (sortRange[1] === Infinity || price <= sortRange[1]));
+
+  return matchesCategory && matchesSearch && matchesPrice && matchesSortRange;
+});
+
+
+// ✅ Apply price sorting range
+if (sortRange) {
+  filtered = filtered.filter(
+    (p) =>
+      (p.price || p.amount) >= sortRange[0] &&
+      (sortRange[1] === Infinity || (p.price || p.amount) <= sortRange[1])
+  );
+}
+
 
   useEffect(() => {
     setCurrentPage(1);
@@ -339,16 +355,15 @@ export default function Store() {
     (currentPage - 1) * productsPerPage,
     currentPage * productsPerPage
   );
+  
 
   return (
-    <div className="max-w-6xl mt-[7rem] lg:mt-[6rem] mx-auto px-6 py-10">
+    <div className="max-w-6xl mt-[7rem] lg:mt-[6rem] mx-auto lg:px-6 py-10">
       <Toaster position="top-right" />
       <div className="flex justify-between ">
         <h1 className="lg:text-3xl text-xl text-white font-bold text-center mb-6">hlo</h1>
         <h1 className="lg:text-3xl text-xl font-bold text-center mb-6">🛍️ Product Store</h1>
         <Filters
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
           subcategories={subcategories}
           selectedSubcategory={selectedSubcategory}
           setSelectedSubcategory={setSelectedSubcategory}
@@ -356,6 +371,8 @@ export default function Store() {
           setSearchTerm={setSearchTerm}
           maxPrice={maxPrice}
           setMaxPrice={setMaxPrice}
+          sortRange={sortRange}             
+          setSortRange={setSortRange}      
         />
       </div>
     <div className="lg:block hidden">
@@ -429,7 +446,7 @@ export default function Store() {
     </div>
 
 
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="flex flex-row flex-wrap sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
         {paginatedProducts.length === 0 ? (
           <p className="col-span-full text-center">No matching products.</p>
         ) : (
@@ -438,12 +455,12 @@ export default function Store() {
             return (
               <div
                 key={item.slug}
-                className="bg-white rounded-xl shadow p-4 flex flex-col justify-between min-h-[300px] lg:w-[250px]"
+                className="relative focus-none bg-white lg:rounded-xl lg:shadow p-4 flex flex-col justify-between min-h-[300px] w-[50vw] lg:w-[250px]"
               >
                 <img
                   src={item.image || item.img}
                   alt={item.title}
-                  className="md:w-[250px] h-36 md:h-48 object-cover rounded-lg"
+                  className="md:w-[250px] w-full h-36 md:h-48 object-cover rounded-lg"
                 />
                 <h3 className="md:text-lg text-xs lg:font-semibold lg:mt-3">{item.title}</h3>
                 <p className="text-purple-700 font-semibold text-sm md:text-xl">₹{item.price || item.amount}</p>
@@ -454,7 +471,7 @@ export default function Store() {
                     toast.success(`${wished ? "Removed from" : "Added to"} Wishlist: ${item.title}`);
                   }}
                   className={`absolute top-3 right-3 text-2xl transition-transform duration-300 ${
-                    wished ? "text-red-500 scale-110" : "text-gray-400 hover:scale-110"
+                    wished ? "text-red-500 scale-110" : "text-gray-900 hover:scale-110"
                   }`}
                 >
                   {wished ? "❤️" : "🤍"}

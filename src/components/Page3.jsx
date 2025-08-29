@@ -138,7 +138,7 @@ useEffect(() => {
   return (
     <div
       id="page3-section"
-      className="bg-purple-50 py-12 mb-[-6rem] px-4 sm:px-6 lg:px-8 min-h-auto"
+      className="bg-purple-50 py-12 mb-[-6rem] lg:px-8 min-h-auto"
     >
       <Cards
         title="Tech & Products"

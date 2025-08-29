@@ -194,7 +194,7 @@ export default function Categories() {
         <Link
           to={`/product/${gift.slug}`}
           key={idx}
-          className="w-40 md:w-[75%] h-88 flex-shrink-0 snap-start sm:w-auto sm:flex-shrink sm:snap-none bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-transform duration-200 hover:-translate-y-1"
+          className="w-40 md:w-[75%] lg:h-88 flex-shrink-0 snap-start sm:w-auto sm:flex-shrink sm:snap-none bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-transform duration-200 hover:-translate-y-1"
         >
           <div className="relative h-40 md:h-[65%] w-40 md:w-full bg-gray-100">
             {gift.image ? (
@@ -224,16 +224,16 @@ export default function Categories() {
           </div>
 
           <div className="md:p-3 px-2 mt-0 flex flex-col ">
-            <div className="text-xs text-purple-600 mb-1">
+            <div className="text-xs text-purple-600 mb-1 mt-2">
               ⭐ {gift.rating} | {gift.reviews}
             </div>
             <div className="font-medium text-sm sm:text-base line-clamp-2 mb-0 md:mb-1">
               {gift.title}
             </div>
-            <div className="text-base font-bold text-gray-800 ">
+            <div className="lg:text-sm text-xs font-bold text-gray-800 mb-2 ">
               ₹{gift.price}
               {gift.originalPrice && (
-                <span className="text-sm text-gray-400 line-through ml-2">
+                <span className=" text-gray-400 line-through ml-2">
                   ₹{gift.originalPrice}
                 </span>
               )}
