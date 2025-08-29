@@ -3,23 +3,23 @@ import React from "react";
 const quirkyItems = [
   {
     title: "Birthday Gifts",
-    image: "https://i.imgur.com/1.png", // replace with real
-    bg: "bg-pink-50",
+    image: "https://i.pinimg.com/736x/e9/1c/e2/e91ce236c6d19a18b996356ded25dc2e.jpg", 
+    bg: "transparent",
   },
   {
     title: "For Friends",
-    image: "https://i.imgur.com/2.png",
-    bg: "bg-orange-50",
+    image: "https://i.pinimg.com/736x/32/b2/b5/32b2b5b01130cb7ef5889e757f73d5f7.jpg",
+    bg: "transparent",
   },
   {
     title: "Pop Culture",
-    image: "https://i.imgur.com/3.png",
-    bg: "bg-yellow-50",
+    image: "https://i.pinimg.com/1200x/dd/39/eb/dd39eba8a9f327da683ace54875e09f8.jpg",
+    bg: "transparent",
   },
   {
     title: "Hatke Gifts",
-    image: "https://i.imgur.com/4.png",
-    bg: "bg-yellow-100",
+    image: "https://i.pinimg.com/736x/40/c7/58/40c758a0af210d440428ca41f6b72687.jpg",
+    bg: "transparent",
   },
 ];
 
@@ -36,19 +36,19 @@ export default function QuirkyCelebrations() {
             key={i}
             className={`
               ${item.bg}
-              rounded-2xl overflow-hidden shadow-sm transition-transform hover:scale-105
+              rounded-2xl overflow-hidden transition-transform hover:scale-105
               flex flex-col items-center justify-between
               ${i === quirkyItems.length - 1 ? "md:col-span-2" : ""}
             `}
           >
-            <div className="p-4 w-full flex justify-center items-center">
+            <div className="p-0 w-full flex justify-center items-center">
               <img
                 src={item.image}
                 alt={item.title}
-                className="w-24 sm:w-28 md:w-32 h-40 sm:h-44 md:h-48 object-contain"
+                className="w-24 sm:w-28 md:w-full h-40 sm:h-44 md:h-48 object-fit"
               />
             </div>
-            <div className="text-center pb-4 text-sm font-medium">
+            <div className="text-center py-4 text-sm font-medium">
               {item.title}
             </div>
           </div>

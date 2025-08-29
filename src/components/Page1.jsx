@@ -28,19 +28,19 @@ const slides = [
     id: 1,
     heading: "Send Gifts to Loved Ones in Your City within Minutes",
     sub: "A Surprise Gift",
-    img: "https://images.unsplash.com/photo-1739022113824-6b86cf63c4cf?w=600&auto=format&fit=crop&q=60",
+    img: "https://i.pinimg.com/736x/40/c7/58/40c758a0af210d440428ca41f6b72687.jpg",
   },
   {
     id: 2,
     heading: "Make Someone Smile with a Surprise Delivery",
     sub: "Fast & Reliable",
-    img: banner1,
+    img: "https://i.pinimg.com/736x/02/9b/15/029b15eaabac6c46d9730ba182045187.jpg",
   },
   {
     id: 3,
     heading: "Celebrate Every Moment with the Perfect Gift",
     sub: "Crafted with Love",
-    img: "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=600&auto=format&fit=crop&q=60",
+    img: "https://i.pinimg.com/736x/51/ee/9e/51ee9e360f63a3b047f24f01a6c1d696.jpg",
   },
 ];
 
@@ -110,8 +110,7 @@ export default function Page1() {
     <div className="flex flex-col items-center justify-center mt-[6rem] px-4 lg:px-0 lg:mt-[9rem] bg-white text-black">
       
       {/* ✅ Fixed Horizontal Scroll Section */}
-      {/* ✅ Fixed Horizontal Scroll Section with Real Names */}
-      <div className="md:hidden w-full overflow-x-auto mt-5 mb-4 flex flex-col  scrollbar-hide">
+      <div className="md:hidden w-full overflow-x-auto mt-5 mb-0 flex flex-col  scrollbar-hide">
         <div className="flex flex-nowrap gap-4 px-0 py-2 w-max">
           {block.map((block, idx) => (
             <div
@@ -129,6 +128,8 @@ export default function Page1() {
             </div>
           ))}
         </div>
+      </div> 
+      <div className="md:hidden w-full overflow-x-auto mt-0 mb-4 flex flex-col  scrollbar-hide">
         <div className="flex flex-nowrap gap-4 px-0 py-4 w-max mt-[-2rem]">
           {block2.map((block2, idx) => (
             <div

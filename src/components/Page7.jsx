@@ -7,12 +7,6 @@ import { useProduct } from "./ProductContext";
 import { useWishlist } from "./WishlistContext";
 import { useCart } from "./CartContext";
 
-import choco1 from "../assets/react.svg";
-import choco2 from "../assets/react.svg";
-import choco3 from "../assets/react.svg";
-import choco4 from "../assets/react.svg";
-
-// ✅ Step 1: Default (dummy) items shown before backend loads
 const defaultItems = [
   {
     title: "Necklace",
@@ -20,7 +14,7 @@ const defaultItems = [
     originalPrice: 999,
     discount: "15% Off",
     slug: "necklace",
-    image: choco1,
+    image: "https://i.pinimg.com/736x/28/ca/41/28ca416b445a1eccf3fd801f003b9ffd.jpg",
     delivery: "Tomorrow",
     category: "Jewellery",
     shop: "Necklace",
@@ -30,7 +24,7 @@ const defaultItems = [
     title: "Bangles",
     price: 799,
     slug: "bangles",
-    image: choco2,
+    image: "https://i.pinimg.com/736x/62/7a/60/627a60cae5ad1362e06d210bd8deba1f.jpg",
     delivery: "Tomorrow",
     category: "Jewellery",
     shop: "Necklace",
@@ -42,7 +36,7 @@ const defaultItems = [
     originalPrice: 2899,
     discount: "9% Off",
     slug: "diamond-ring",
-    image: choco3,
+    image: "https://i.pinimg.com/736x/30/9a/eb/309aebe4def3dc41da19618c21e56969.jpg",
     delivery: "Tomorrow",
     category: "Jewellery",
     shop: "Necklace",
@@ -54,7 +48,7 @@ const defaultItems = [
     originalPrice: 949,
     discount: "10% Off",
     slug: "gold-earrings",
-    image: choco4,
+    image: "https://i.pinimg.com/1200x/83/93/d2/8393d23e4d109d7ff4401ae2501aad6d.jpg",
     delivery: "Tomorrow",
     category: "Jewellery",
     shop: "Necklace",

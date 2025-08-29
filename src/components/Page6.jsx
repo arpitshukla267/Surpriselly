@@ -18,14 +18,14 @@ const defaultItems = [
           originalPrice: 999,
           discount: "15% Off",
           slug: "shirt",
-          image: choco1,
+          image: "https://i.pinimg.com/736x/f0/5f/80/f05f80c95be38698af4178e19b2696d9.jpg",
           delivery: "Tomorrow",
         },
         {
           title: "T-Shirt",
           price: 799,
           slug: "t-shirt",
-          image: choco2,
+          image: "https://i.pinimg.com/1200x/5a/4b/ab/5a4bab5f3e59eabf85a71ffe2f8b7f86.jpg",
           delivery: "Tomorrow",
         },
         {
@@ -34,7 +34,7 @@ const defaultItems = [
           originalPrice: 2899,
           discount: "9% Off",
           slug: "jeans",
-          image: choco3,
+          image: "https://i.pinimg.com/736x/37/cc/c8/37ccc8de341e739a8786510272f2494e.jpg",
           delivery: "Tomorrow",
         },
         {
@@ -43,7 +43,7 @@ const defaultItems = [
           originalPrice: 949,
           discount: "10% Off",
           slug: "baggy-pants",
-          image: choco4,
+          image: "https://i.pinimg.com/736x/c6/59/fd/c659fd0e96f0144adb6416e73b2dfd17.jpg",
           delivery: "Tomorrow",
         },
       ]

@@ -3,7 +3,7 @@ import bannerImage from "../assets/react.svg"; // replace with actual image path
 
 export default function EventBanner() {
   return (
-    <div className="bg-[#e7e8ee] py-12 mt-[5rem] px-6 lg:px-20">
+    <div className="bg-gradient-to-r from-pink-200 via-purple-300 to-blue-200  py-12 mt-[5rem] px-6 lg:px-20">
       <div className="max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center gap-12">
         {/* Text Section */}
         <div className="flex-1 text-center lg:text-left">
@@ -40,9 +40,9 @@ export default function EventBanner() {
         {/* Image Section */}
         <div className="flex-1">
           <img
-            src={bannerImage}
+            src="https://i.pinimg.com/736x/6f/f9/c0/6ff9c04e6097bab5303d6946ddbe6d21.jpg"
             alt="Event"
-            className="w-full h-[20rem] object-contain"
+            className="w-full h-[20rem] object-fit rounded-3xl"
           />
         </div>
       </div>

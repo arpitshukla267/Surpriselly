@@ -19,14 +19,14 @@ const defaultItems = [
           originalPrice: 999,
           discount: "15% Off",
           slug: "doll-house",
-          image: choco1,
+          image: "https://i.pinimg.com/736x/a0/01/e9/a001e948893ea189becbb07837fde5e2.jpg",
           delivery: "Tomorrow",
         },
         {
           title: "Teddy Bear",
           price: 799,
           slug: "teddy-bear",
-          image: choco2,
+          image: "https://i.pinimg.com/736x/5a/96/15/5a96157a5c149bca761353bead2afc6c.jpg",
           delivery: "Tomorrow",
         },
         {
@@ -35,7 +35,7 @@ const defaultItems = [
           originalPrice: 2899,
           discount: "9% Off",
           slug: "panda",
-          image: choco3,
+          image: "https://i.pinimg.com/1200x/b1/94/04/b194048ef5e1fd0c74beb4895ee05565.jpg",
           delivery: "Tomorrow",
         },
         {
@@ -44,7 +44,7 @@ const defaultItems = [
           originalPrice: 949,
           discount: "10% Off",
           slug: "car",
-          image: choco4,
+          image: "https://i.pinimg.com/736x/53/ae/c3/53aec3f15bc19946f784dc685247984c.jpg",
           delivery: "Tomorrow",
         },
 ]

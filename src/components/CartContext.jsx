@@ -17,23 +17,26 @@ export function CartProvider({ children }) {
   }, [cart]);
 
   // ➕ Add to cart
-  const addToCart = (item) => {
-    setCart((prev) => {
-      const exists = prev.find((i) => i.slug === item.slug);
-      const itemWithAmount = {
-        ...item,
-        amount: item.amount ?? item.price, // ✅ Ensure amount always exists
-      };
+const addToCart = (item) => {
+  const defaultImg = "/placeholder.png"; // fallback image if none exists
 
-      if (exists) {
-        return prev.map((i) =>
-          i.slug === item.slug ? { ...i, qty: (i.qty || 1) + 1 } : i
-        );
-      } else {
-        return [...prev, { ...itemWithAmount, qty: 1 }];
-      }
-    });
-  };
+  setCart((prev) => {
+    const exists = prev.find((i) => i.slug === item.slug);
+    const itemWithAmount = {
+      ...item,
+      amount: item.amount ?? item.price,
+      img: item.img || defaultImg, // ✅ Ensure img exists
+    };
+
+    if (exists) {
+      return prev.map((i) =>
+        i.slug === item.slug ? { ...i, qty: (i.qty || 1) + 1 } : i
+      );
+    } else {
+      return [...prev, { ...itemWithAmount, qty: 1 }];
+    }
+  });
+};
 
   // ❌ Remove from cart
   const removeFromCart = (slug) =>

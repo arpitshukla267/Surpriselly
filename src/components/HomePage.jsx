@@ -14,7 +14,6 @@ import EventBanner from './EventBanner'
 import Footer from './Footer'
 import BottomBar from './BottomBar'
 import LuxuryItems from './LuxuryItems'
-import BestSeller from './BestSeller'
 
 function HomePage() {
   return (
@@ -23,7 +22,6 @@ function HomePage() {
         <Page1 />
         <Categories />
         <LuxuryItems />
-        <BestSeller />
         <Page2 /> 
         <Page3 />
         <QuirkyCelebrations />
@@ -33,7 +31,6 @@ function HomePage() {
         <Page7 />
         <EventBanner />
         <Page8 />
-        <BottomBar/>
     </div>
   )
 }

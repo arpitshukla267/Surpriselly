@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import choco1 from "../assets/react.svg";
-import choco2 from "../assets/react.svg";
-import { Link } from "react-router-dom"; // Only if you're using React Router
+import { Link } from "react-router-dom";
 
 export default function Page5() {
   const [items, setItems] = useState([]);
@@ -14,14 +12,16 @@ export default function Page5() {
           title: "Give Gifts to Your Loved Ones",
           subtitle: "A Surprise Gift",
           slug: "give-gifts-loved-ones",
-          image: choco1,
+          image:
+            "https://i.pinimg.com/736x/1d/82/53/1d82538790bdb2132b5833204ba5a73a.jpg",
           bg: "bg-[#dfe0bc]",
         },
         {
           title: "Give something what useful",
           subtitle: "",
           slug: "give-something-useful",
-          image: choco2,
+          image:
+            "https://i.pinimg.com/1200x/60/8a/24/608a246dc17fa46433036261c77df345.jpg",
           bg: "bg-gradient-to-r from-[#b28efc] to-[#dcc6fc]",
         },
       ]);
@@ -54,11 +54,11 @@ export default function Page5() {
               </div>
 
               {/* Image */}
-              <div className="flex-1">
+              <div className="flex-1 h-24 md:h-48 lg:h-64">
                 <img
                   src={item.image}
                   alt={item.title}
-                  className="max-h-60 w-auto object-contain mx-auto"
+                  className="w-full h-full object-cover rounded-xl"
                 />
               </div>
             </div>

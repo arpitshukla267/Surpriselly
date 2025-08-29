@@ -5,27 +5,27 @@ import { Link } from "react-router-dom";
 const luxuryItems = [
   {
     name: "Gold Roses Box",
-    image: "https://via.placeholder.com/200x200.png?text=Gold+Roses",
+    image: "https://i.pinimg.com/736x/45/50/33/455033116628fa550fff3e7596634104.jpg",
     slug: "gold-roses-box",
   },
   {
     name: "Swarovski Crystal Bear",
-    image: "https://via.placeholder.com/200x200.png?text=Crystal+Bear",
+    image: "https://i.pinimg.com/736x/35/54/6d/35546d444046e38312536a3f682e865a.jpg",
     slug: "swarovski-crystal-bear",
   },
   {
     name: "Luxury Chocolate Tower",
-    image: "https://via.placeholder.com/200x200.png?text=Choco+Tower",
+    image: "https://i.pinimg.com/1200x/d1/ec/38/d1ec388a1e064806f29ec9cdee12ffc7.jpg",
     slug: "luxury-chocolate-tower",
   },
   {
     name: "Velvet Perfume Set",
-    image: "https://via.placeholder.com/200x200.png?text=Velvet+Perfume",
+    image: "https://i.pinimg.com/736x/0a/ba/d6/0abad6ebf0ae1c52b619a14ba109cccb.jpg",
     slug: "velvet-perfume-set",
   },
   {
     name: "Marble Decor Vase",
-    image: "https://via.placeholder.com/200x200.png?text=Marble+Vase",
+    image: "https://i.pinimg.com/1200x/01/ac/d7/01acd7e96b2f34e563c3e571729106b6.jpg",
     slug: "marble-decor-vase",
   },
 ];

@@ -74,7 +74,7 @@ export default function WishlistPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto mt-[8rem] lg:mt-[5rem] py-10 px-4 relative">
+    <div className="max-w-6xl min-h-[40vh] mx-auto mt-[8rem] lg:mt-[5rem] py-10 px-4 relative">
       <Toaster position="top-right" />
 
       {/* Confirmation Modal */}
@@ -132,7 +132,7 @@ export default function WishlistPage() {
       </div>
 
       {wishlist.length === 0 ? (
-        <p className="text-center text-gray-500">No items in wishlist 💔</p>
+        <p className="absolute text-center text-gray-500 top-1/2 right-1/2">No items in wishlist 💔</p>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {wishlist.map((item, i) => (

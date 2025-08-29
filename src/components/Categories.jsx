@@ -53,7 +53,7 @@ const categoryGifts = {
       rating: 4.8,
       reviews: 110,
       slug: "anniversary-chocolate-box",
-      image: "",
+      image: "https://i.pinimg.com/736x/34/14/93/341493f75d0c7fe0406a2661bdc06f72.jpg",
     },
   ],
   "Loved Once": [
@@ -64,7 +64,7 @@ const categoryGifts = {
       rating: 5,
       reviews: 320,
       slug: "red-roses-heart-cake",
-      image: "",
+      image: "https://i.pinimg.com/736x/d3/48/88/d3488813661464fa7e7f067dcb673562.jpg",
     },
   ],
   Congratulations: [
@@ -75,7 +75,7 @@ const categoryGifts = {
       rating: 4.9,
       reviews: 72,
       slug: "congrats-flowers-card",
-      image: "",
+      image: "https://i.pinimg.com/736x/d4/67/1b/d4671bc0b22ea1970824174896b70481.jpg",
     },
   ],
   "Thank You": [
@@ -86,7 +86,7 @@ const categoryGifts = {
       rating: 4.7,
       reviews: 65,
       slug: "thank-you-succulent-box",
-      image: "",
+      image: "https://i.pinimg.com/1200x/54/88/2e/54882eec1251d92ad1d447b1c640eb99.jpg",
     },
   ],
 };
@@ -182,14 +182,14 @@ export default function Categories() {
         </div>
 
         {/* GIFTS GRID */}
-      <div className="max-w-6xl mx-auto flex overflow-x-auto gap-4 pb-2 px-1 snap-x scroll-smooth sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:overflow-x-visible sm:px-0">
+      <div className="max-w-6xl mx-auto flex overflow-x-auto gap-3 md:gap-0 pb-2 px-1 snap-x scroll-smooth sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 sm:overflow-x-visible sm:px-0">
   {isLoading ? (
     Array(4)
       .fill(0)
       .map((_, i) => (
         <div
           key={i}
-          className="w-[75%] flex-shrink-0 snap-start sm:w-auto sm:flex-shrink sm:snap-none animate-pulse bg-white rounded-xl p-4 shadow"
+          className="w-[100%] flex-shrink-0 snap-start sm:w-auto sm:flex-shrink sm:snap-none animate-pulse bg-white rounded-xl p-4 shadow"
         >
           <div className="h-44 bg-gray-200 rounded-lg mb-4"></div>
           <div className="h-4 bg-gray-200 rounded w-2/3 mb-2"></div>
