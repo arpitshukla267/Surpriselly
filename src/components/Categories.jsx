@@ -34,16 +34,6 @@ const categoryGifts = {
       image:
         "https://www.fnp.com/images/pr/l/v20211210124700/golden-glow-sansevieria-birthday-planter_1.jpg",
     },
-    {
-      title: "Golden Glow Sansevieria Birthday Planter",
-      price: 899,
-      originalPrice: null,
-      rating: 5,
-      reviews: 98,
-      slug: "golden-glow-sansevieria",
-      image:
-        "https://www.fnp.com/images/pr/l/v20211210124700/golden-glow-sansevieria-birthday-planter_1.jpg",
-    },
   ],
   Anniversary: [
     {
@@ -182,7 +172,7 @@ export default function Categories() {
         </div>
 
         {/* GIFTS GRID */}
-      <div className="max-w-6xl mx-auto flex overflow-x-auto gap-3 md:gap-0 pb-2 px-1 snap-x scroll-smooth sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 sm:overflow-x-visible sm:px-0">
+      <div className="max-w-6xl mx-auto flex overflow-x-auto gap-3 pb-2 px-1 snap-x scroll-smooth sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 sm:overflow-x-visible">
   {isLoading ? (
     Array(4)
       .fill(0)
@@ -204,14 +194,14 @@ export default function Categories() {
         <Link
           to={`/product/${gift.slug}`}
           key={idx}
-          className="w-40 md:w-[75%] flex-shrink-0 snap-start sm:w-auto sm:flex-shrink sm:snap-none bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-transform duration-200 hover:-translate-y-1"
+          className="w-40 md:w-[75%] h-88 flex-shrink-0 snap-start sm:w-auto sm:flex-shrink sm:snap-none bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-transform duration-200 hover:-translate-y-1"
         >
-          <div className="relative h-40 md:h-44 w-40 md:w-full bg-gray-100">
+          <div className="relative h-40 md:h-[65%] w-40 md:w-full bg-gray-100">
             {gift.image ? (
               <img
                 src={gift.image}
                 alt={gift.title}
-                className="h-full w-full object-cover"
+                className="h-full w-full object-full"
               />
             ) : (
               <div className="flex items-center justify-center h-full text-gray-400">
@@ -233,14 +223,14 @@ export default function Categories() {
             </button>
           </div>
 
-          <div className="md:p-3 px-2 mt-3 flex flex-col h-[100px] md:h-[140px]">
+          <div className="md:p-3 px-2 mt-0 flex flex-col ">
             <div className="text-xs text-purple-600 mb-1">
               ⭐ {gift.rating} | {gift.reviews}
             </div>
-            <div className="font-medium text-sm sm:text-base line-clamp-2 mb-0 md:mb-2">
+            <div className="font-medium text-sm sm:text-base line-clamp-2 mb-0 md:mb-1">
               {gift.title}
             </div>
-            <div className="text-base font-bold text-gray-800 mt-1">
+            <div className="text-base font-bold text-gray-800 ">
               ₹{gift.price}
               {gift.originalPrice && (
                 <span className="text-sm text-gray-400 line-through ml-2">

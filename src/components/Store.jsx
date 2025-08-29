@@ -13,6 +13,7 @@ import choco1 from "../assets/react.svg";
 import choco2 from "../assets/react.svg";
 import choco3 from "../assets/react.svg";
 import choco4 from "../assets/react.svg";
+import Filters from "./ui/Filters";
 
 const page2Products = [
   {
@@ -342,8 +343,22 @@ export default function Store() {
   return (
     <div className="max-w-6xl mt-[7rem] lg:mt-[6rem] mx-auto px-6 py-10">
       <Toaster position="top-right" />
-      <h1 className="text-3xl font-bold text-center mb-6">🛍️ Product Store</h1>
-
+      <div className="flex justify-between ">
+        <h1 className="lg:text-3xl text-xl text-white font-bold text-center mb-6">hlo</h1>
+        <h1 className="lg:text-3xl text-xl font-bold text-center mb-6">🛍️ Product Store</h1>
+        <Filters
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+          subcategories={subcategories}
+          selectedSubcategory={selectedSubcategory}
+          setSelectedSubcategory={setSelectedSubcategory}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          maxPrice={maxPrice}
+          setMaxPrice={setMaxPrice}
+        />
+      </div>
+    <div className="lg:block hidden">
       {subcategories.length > 0 && (
         <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
           <button
@@ -378,25 +393,43 @@ export default function Store() {
       <div className="grid md:grid-cols-2 gap-6 mb-8">
         <input
           type="text"
-          className="w-full border p-2 rounded"
+          className="w-full  border-gray-300 shadow-md py-0 px-4 rounded-3xl"
           placeholder="Search by name"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <div>
-          <label className="block mb-1 font-medium">Max Price: ₹{maxPrice}</label>
+          <label className="block mb-0 text-sm font-semibold text-gray-700">
+            Max Price: <span className="text-purple-600 font-bold">₹{maxPrice}</span>
+          </label>
+          
           <input
             type="range"
             min="0"
             max="20000"
             value={maxPrice}
             onChange={(e) => setMaxPrice(Number(e.target.value))}
-            className="w-full"
+            className="
+              w-full h-3 rounded-full
+              bg-gradient-to-r from-purple-400 via-pink-400 to-red-400
+              accent-purple-600
+              cursor-pointer
+              hover:opacity-90
+              focus:outline-none focus:ring-2 focus:ring-purple-500
+              transition-all duration-300
+            "
           />
+          
+          <div className="flex justify-between text-xs text-gray-500 mt-1">
+            <span>₹0</span>
+            <span>₹20,000</span>
+          </div>
         </div>
       </div>
+    </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-6">
+
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {paginatedProducts.length === 0 ? (
           <p className="col-span-full text-center">No matching products.</p>
         ) : (
@@ -405,15 +438,15 @@ export default function Store() {
             return (
               <div
                 key={item.slug}
-                className="bg-white rounded-xl shadow p-4 flex flex-col justify-between min-h-[300px]"
+                className="bg-white rounded-xl shadow p-4 flex flex-col justify-between min-h-[300px] lg:w-[250px]"
               >
                 <img
                   src={item.image || item.img}
                   alt={item.title}
-                  className="md:w-full h-32 md:h-72 object-cover rounded-lg"
+                  className="md:w-[250px] h-36 md:h-48 object-cover rounded-lg"
                 />
-                <h3 className="md:text-lg text-sm font-semibold mt-3">{item.title}</h3>
-                <p className="text-purple-700 font-bold text-sm md:text-xl">₹{item.price || item.amount}</p>
+                <h3 className="md:text-lg text-xs lg:font-semibold lg:mt-3">{item.title}</h3>
+                <p className="text-purple-700 font-semibold text-sm md:text-xl">₹{item.price || item.amount}</p>
 
                 <button
                   onClick={() => {
@@ -432,7 +465,7 @@ export default function Store() {
                     addToCart(item);
                     toast.success(`${item.title} added to cart!`);
                   }}
-                  className="mt-4 lg:text-lg text-sm w-full bottom-3 bg-white border-2 border-purple-700 hover:bg-purple-200 duration-300 text-purple-700 font-semibold py-2 rounded-full"
+                  className="lg:mt-4 lg:text-lg text-sm w-full bottom-3 bg-white border-1 lg:border-2 border-purple-700 hover:bg-purple-200 duration-300 text-purple-700 font-semibold py-2 rounded-full"
                 >
                   Add to Cart
                 </button>

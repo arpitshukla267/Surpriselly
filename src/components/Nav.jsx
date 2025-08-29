@@ -108,7 +108,7 @@ export default function Nav() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-              className="w-full pl-12 pr-12 py-2.5 rounded-full border-gray-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white"
+              className="w-full pl-6 pr-12 py-2.5 rounded-full border-gray-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white"
             />
             {/* <FaSearch className="absolute left-4 top-4 text-gray-400" /> */}
             <button

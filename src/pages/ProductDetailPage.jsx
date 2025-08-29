@@ -75,6 +75,7 @@ export default function ProductDetailPage() {
 
         {/* Right - Product Details */}
         <div className="flex-1 space-y-6 justify-center items-center">
+          <h1 className="text-3xl quando-regular">{product.title}</h1>
           <p className="text-3xl font-bold text-green-700">₹ {product.price}</p>
           {product.originalPrice && (
             <p className="text-gray-500 line-through">₹ {product.originalPrice}</p>
@@ -82,7 +83,7 @@ export default function ProductDetailPage() {
           <p className="text-gray-700">
             <strong>Delivery:</strong> {product.delivery || "N/A"}
           </p>
-          <p className="text-gray-600">{product.description || "No description available."}</p>
+          {/* <p className="text-gray-600">{product.description || "No description available."}</p> */}
 
           <input
             type="text"

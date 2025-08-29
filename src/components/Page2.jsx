@@ -5,11 +5,6 @@ import { FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useProduct } from "./ProductContext";
 
-import choco1 from "../assets/react.svg";
-import choco2 from "../assets/react.svg";
-import choco3 from "../assets/react.svg";
-import choco4 from "../assets/react.svg";
-
 const defaultItems = [
   {
     title: "Dark Chocolate Bar Set Of 2",
@@ -68,9 +63,11 @@ export default function Page2() {
 
   const { addProducts } = useProduct();
 
+  // Add default items to context immediately
   useEffect(() => {
-    setItems(defaultItems);
+    addProducts(defaultItems);
 
+    // Fetch backend products
     fetch("https://your-backend.com/api/products?shop=Combos")
       .then((res) => {
         if (!res.ok) throw new Error("Network error");
@@ -84,11 +81,10 @@ export default function Page2() {
         setItems(withAmount);
         addProducts(withAmount);
       })
-      .catch((err) => {
-        console.error("Failed to fetch from backend:", err.message);
-      });
+      .catch((err) => console.error("Failed to fetch from backend:", err.message));
   }, []);
 
+  // Wishlist sync
   useEffect(() => {
     const sync = () => {
       const stored = localStorage.getItem("wishlist-page2");
@@ -112,24 +108,10 @@ export default function Page2() {
     window.dispatchEvent(new Event("storage"));
   };
 
-  useEffect(() => {
-    const scrollToSelf = () => {
-      const el = document.getElementById("page2-section");
-      if (el) {
-        const rect = el.getBoundingClientRect();
-        const offset =
-          rect.top + window.scrollY - window.innerHeight / 2 + rect.height / 2;
-        window.scrollTo({ top: offset, behavior: "smooth" });
-      }
-    };
-    window.addEventListener("scroll-to-page2", scrollToSelf);
-    return () => window.removeEventListener("scroll-to-page2", scrollToSelf);
-  }, []);
-
   return (
     <div
       id="page2-section"
-      className="bg-purple-50 py-12 mb-[-9rem] md:mb-[-6rem] px-4 sm:px-6 lg:px-8"
+      className="bg-purple-50 py-12 mb-[-6rem] px-4 sm:px-6 lg:px-8"
     >
       <Cards
         title="Combos & Baskets"
@@ -142,6 +124,7 @@ export default function Page2() {
           !item ? null : (
             <Link
               to={`/product/${item.slug}`}
+              state={{ product: item }} // pass product via state
               className="relative group p-3 h-[300px] flex flex-col bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden"
               onClick={() => setSelected(item)}
             >
