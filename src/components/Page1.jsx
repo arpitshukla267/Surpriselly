@@ -107,7 +107,7 @@ export default function Page1() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center mt-[6rem] px-4 lg:px-0 lg:mt-[9rem] bg-white text-black">
+    <div className="flex flex-col items-center justify-center mt-[2rem] px-4 lg:px-0 lg:mt-[9rem] bg-white text-black">
       
       {/* ✅ Fixed Horizontal Scroll Section */}
       <div className="md:hidden w-full overflow-x-auto mt-5 mb-0 flex flex-col  scrollbar-hide">

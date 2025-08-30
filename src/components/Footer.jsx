@@ -12,7 +12,7 @@ import logo from "../assets/logo.png"; // replace with your actual logo
 
 const Footer = () => {
   return (
-    <footer className="bg-[#e6dcfa] mt-[6rem] text-gray-800 py-10 px-4">
+    <footer className="bg-[#e6dcfa] mt-[6rem] text-gray-800 py-10 px-4 z-999">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Logo & Description */}
         <div>
@@ -37,18 +37,18 @@ const Footer = () => {
           <h3 className="text-lg font-semibold mb-4 text-purple-700">Contact</h3>
           <ul className="space-y-3 text-sm text-gray-700">
             <li className="flex items-center gap-2"><FaMapMarkerAlt className="text-purple-600" /> Jhansi, UP, India</li>
-            <li className="flex items-center gap-2"><FaPhoneAlt className="text-purple-600" /> +91-9236553585</li>
-            <li className="flex items-center gap-2"><FaEnvelope className="text-purple-600" /> mail@gmail.com</li>
+            <li className="flex items-center gap-2"><FaPhoneAlt className="text-purple-600" /> +91 6393818467</li>
+            <li className="flex items-center gap-2"><FaEnvelope className="text-purple-600" /> shuklaarpit440@gmail.com</li>
           </ul>
         </div>
 
         {/* Social Media */}
         <div>
           <h3 className="text-lg font-semibold mb-4 text-purple-700">Follow Us</h3>
-          <div className="flex space-x-4">
-            <a href="#" className="text-purple-600 hover:text-purple-900"><FaFacebookF /></a>
-            <a href="#" className="text-purple-600 hover:text-purple-900"><FaInstagram /></a>
-            <a href="#" className="text-purple-600 hover:text-purple-900"><FaTwitter /></a>
+          <div className="flex lg:space-x-4 space-x-3">
+            <a href="#" className="text-purple-600 hover:text-purple-900 text-2xl"><FaFacebookF /></a>
+            <a href="#" className="text-purple-600 hover:text-purple-900 text-2xl"><FaInstagram /></a>
+            <a href="#" className="text-purple-600 hover:text-purple-900 text-2xl"><FaTwitter /></a>
           </div>
         </div>
       </div>

@@ -62,7 +62,7 @@ export default function LuxuryItems() {
   return (
     <div className="px-0 md:px-4 py-8 bg-gradient-to-br from-purple-600 to-purple-400">
       <h2
-        className="text-4xl text-white ml-3 mb-4 quando-regular"
+        className="lg:text-4xl text-2xl text-white ml-3 mb-4 quando-regular"
         style={{ textShadow: "1px 1px 2px #7669c1" }}
       >
         Luxury Collection

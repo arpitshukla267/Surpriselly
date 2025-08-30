@@ -74,7 +74,7 @@ export default function WishlistPage() {
   };
 
   return (
-    <div className="max-w-6xl min-h-[40vh] mx-auto mt-[8rem] lg:mt-[5rem] py-10 px-4 relative">
+    <div className="max-w-6xl min-h-[40vh] mx-auto mt-[2rem] lg:mt-[5rem] py-10 px-2 relative">
       <Toaster position="top-right" />
 
       {/* Confirmation Modal */}
@@ -120,7 +120,7 @@ export default function WishlistPage() {
       `}</style>
 
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold">Your Wishlist ❤️</h1>
+        <h1 className="lg:text-3xl text-xl font-bold">Your Wishlist ❤️</h1>
         {wishlist.length > 0 && (
           <button
             onClick={() => setShowConfirmModal(true)}
@@ -134,11 +134,11 @@ export default function WishlistPage() {
       {wishlist.length === 0 ? (
         <p className="absolute text-center text-gray-500 top-1/2 right-1/2">No items in wishlist 💔</p>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-6 gap-1">
           {wishlist.map((item, i) => (
             <div
               key={item.slug || item.title || i}
-              className="bg-white rounded-lg shadow p-4 transition hover:shadow-lg relative flex flex-col justify-between"
+              className="bg-white rounded-lg shadow lg:p-2 transition hover:shadow-lg relative flex flex-col justify-between"
             >
               <button
                 onClick={() => removeFromWishlist(item.slug || item.title)}
@@ -154,7 +154,7 @@ export default function WishlistPage() {
                 className="w-full h-40 object-cover rounded"
               />
 
-              <div className="mt-2 flex flex-col gap-1">
+              <div className="lg:mt-2 flex flex-col gap-1 p-2">
                 <h2 className="text-sm font-semibold text-gray-800 line-clamp-2">
                   {item.title}
                 </h2>

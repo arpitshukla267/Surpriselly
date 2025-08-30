@@ -132,7 +132,7 @@ export default function Page2() {
                 <img
                   src={item.image}
                   alt={item.title}
-                  className="w-full h-24 md:h-44 object-contain rounded-lg"
+                  className="w-full h-24 md:h-44 object-fit rounded-lg"
                 />
                 <button
                   className="absolute top-0 right-1 bg-white p-1.5 rounded-full shadow group-hover:scale-105 transition"

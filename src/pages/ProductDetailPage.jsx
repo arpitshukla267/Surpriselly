@@ -60,21 +60,20 @@ export default function ProductDetailPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-16">
-      <h1 className="text-3xl md:text-4xl font-bold text-center mb-12">{product.title}</h1>
+    <div className="max-w-6xl mx-auto px-4 mt-8 lg:mt-12 py-16">
 
-      <div className="grid md:grid-cols-2 gap-12 bg-white p-6 md:p-10 rounded-3xl shadow-lg">
+      <div className="grid md:grid-cols-2 lg:gap-12 gap-4 bg-white p-2 md:p-10 rounded-3xl shadow-lg">
         {/* Left - Product Image */}
-        <div className="flex-1">
+        <div className="flex-1 justify-center items-center">
           <img
             src={product.image || "/placeholder.png"}
-            alt={product.title}
-            className="w-full h-full object-cover rounded-xl shadow"
+            // alt={product.title}
+            className="w-full h-84 object-fit rounded-xl shadow"
           />
         </div>
 
         {/* Right - Product Details */}
-        <div className="flex-1 space-y-6 justify-center items-center">
+        <div className="lg:flex-1 lg:space-y-6 space-y-4 justify-center p-4 items-center">
           <h1 className="text-3xl quando-regular">{product.title}</h1>
           <p className="text-3xl font-bold text-green-700">₹ {product.price}</p>
           {product.originalPrice && (

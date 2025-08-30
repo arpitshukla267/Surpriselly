@@ -104,23 +104,17 @@ const handleSearch = () => {
   };
 
   return (
-    <header className={`fixed top-0 left-0 w-full z-50 pb-1 md:pb-3 bg-white text-black scrolled ? "h-10 md:h-14" : "h-16 md:h-20"}`}>
-      <header className="w-full h-7 bg-black"></header>
+    <header className={`fixed top-0 left-0 w-full z-50 pb-0 md:pb-3 bg-white scrolled ? "h-10 md:h-14" : "h-16 md:h-20"}`}>
       {/* Top Row */}
-      <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto lg:px-4 lg:py-4 flex items-center justify-between bg-white">
         <a href="/" className="hidden md:flex items-center gap-2 shrink-0">
           <img src={logo} alt="Logo" className="h-14" />
         </a>
-         <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden text-purple-700 text-2xl mb-8 mt-7"
-        >
-          {mobileMenuOpen ? <FaTimes /> : <FaBars />}
-        </button>
+
 
 
         {/* Search bar - Desktop */}
-        <div className="hidden md:block flex-1 mx-6">
+        <div className="hidden md:block flex-1 mx-6 bg-white">
           <SearchBar />
         </div>
         {/* Icons - Desktop */}
@@ -222,24 +216,33 @@ const handleSearch = () => {
 
 
         {/* Mobile Menu Button */}
-        <div className="md:hidden flex justify-between items-center gap-6 mb-8 mt-6">
-          <FaMapMarkerAlt className="text-2xl text-purple-600" />
-          <NavLink to="/wishlist" className="relative">
-            <FaHeart className="text-2xl text-purple-700 hover:text-red-600" />
-            {wishlist.length > 0 && (
-              <span className="absolute -top-1 -right-2 text-xs bg-red-600 text-white rounded-full h-5 w-5 grid place-content-center">
-                {wishlist.length}
-              </span>
-            )}
-          </NavLink>
-          <NavLink to="/cart" className="relative">
-            <FaShoppingCart className="text-2xl text-purple-700 hover:text-green-600" />
-            {cart.length > 0 && (
-              <span className="absolute -top-1 -right-2 text-xs bg-red-600 text-white rounded-full h-5 w-5 grid place-content-center">
+        <div className="md:hidden flex w-full justify-between items-center gap-6 lg:mb-8 px-4 py-4 mt-0 z-40 bg-white">
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden text-purple-700 text-2xl z-40 pb-2"
+          >
+            {mobileMenuOpen ? <FaTimes /> : <FaBars />}
+          </button>
+
+          <div className="flex justify-center items-center gap-6">
+            <FaMapMarkerAlt className="text-2xl text-purple-600" />
+            <NavLink to="/wishlist" className="relative">
+              <FaHeart className="text-2xl text-purple-700 hover:text-red-600" />
+              {wishlist.length > 0 && (
+                <span className="absolute -top-1 -right-2 text-xs bg-red-600 text-white rounded-full h-5 w-5 grid place-content-center">
+                  {wishlist.length}
+                </span>
+              )}
+            </NavLink>
+            <NavLink to="/cart" className="relative">
+              <FaShoppingCart className="text-2xl text-purple-700 hover:text-green-600" />
+              {cart.length > 0 && (
+                <span className="absolute -top-1 -right-2 text-xs bg-red-600 text-white rounded-full h-5 w-5 grid place-content-center">
                 {cart.reduce((sum, item) => sum + item.qty, 0)}
-              </span>
-            )}
-          </NavLink>       
+                </span>
+              )}
+            </NavLink>  
+          </div>     
         </div>
       </div>
 
@@ -249,7 +252,7 @@ const handleSearch = () => {
       </div>
 
       {/* Desktop Category Strip */}
-      <div className="bg-white text-black p-2 font-medium text-sm border-b hidden md:flex">
+      <div className="bg-white text-black p-2 font-medium text-sm shadow-md hidden md:flex">
         <div className="max-w-7xl mx-auto px-6 py-2 flex flex-wrap gap-12">
           {categoriesBottom.map((cat, i) => (
             <button

@@ -358,7 +358,7 @@ if (sortRange) {
   
 
   return (
-    <div className="max-w-6xl mt-[7rem] lg:mt-[6rem] mx-auto lg:px-6 py-10">
+    <div className="max-w-6xl mt-[2rem] lg:mt-[6rem] mx-auto lg:px-6 py-10">
       <Toaster position="top-right" />
       <div className="flex justify-between ">
         <h1 className="lg:text-3xl text-xl text-white font-bold text-center mb-6">hlo</h1>

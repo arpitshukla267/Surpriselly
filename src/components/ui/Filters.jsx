@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import { Menu, X } from "lucide-react";
 
@@ -11,10 +11,22 @@ export default function Filters({
   maxPrice,
   setMaxPrice,
   sortRange,
-  setSortRange, // ✅ new for price range sorting
+  setSortRange,
 }) {
   const [showFilterSidebar, setShowFilterSidebar] = useState(false);
   const [showSortSidebar, setShowSortSidebar] = useState(false);
+
+  // ✅ Prevent page scroll when filter or sort sidebar is active
+  useEffect(() => {
+    if (showFilterSidebar || showSortSidebar) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showFilterSidebar, showSortSidebar]);
 
   // Handle subcategory click
   const handleSubcategoryClick = (sub) => {
@@ -29,7 +41,7 @@ export default function Filters({
         {/* Sort Button */}
         <button
           onClick={() => setShowSortSidebar(true)}
-          className="fixed z-999 bottom-0 left-0 gap-2 text-white flex items-center justify-center border-r-2 border-white backdrop-blur-2xl bg-pink-500/50 py-2 px-4 w-[50%] font-bold hover:bg-purple-700 transition"
+          className="fixed z-99 bottom-0 left-0 gap-2 text-white flex items-center justify-center border-r-2 border-white backdrop-blur-2xl bg-pink-500/50 py-2 px-4 w-[50%] font-bold hover:bg-purple-700 transition"
         >
           <Menu size={22} /> Sort
         </button>
@@ -37,7 +49,7 @@ export default function Filters({
         {/* Filter Button */}
         <button
           onClick={() => setShowFilterSidebar(true)}
-          className="fixed z-999 bottom-0 right-0 text-white flex items-center justify-center gap-2 backdrop-blur-2xl bg-pink-500/50 py-2 px-4 w-[50%] font-bold hover:bg-purple-700 transition"
+          className="fixed z-99 bottom-0 right-0 text-white flex items-center justify-center gap-2 backdrop-blur-2xl bg-pink-500/50 py-2 px-4 w-[50%] font-bold hover:bg-purple-700 transition"
         >
           <Menu size={22} /> Filter
         </button>
@@ -46,7 +58,7 @@ export default function Filters({
       {/* FILTER SIDEBAR (slides from left) */}
       <div
         className={clsx(
-          "fixed top-0 left-0 h-full w-72 bg-white shadow-lg z-50 transform transition-transform duration-300 md:hidden",
+          "fixed top-0 left-0 h-full w-72 z-990 bg-white shadow-lg transform transition-transform duration-300 md:hidden",
           showFilterSidebar ? "translate-x-0" : "-translate-x-full"
         )}
       >
@@ -59,15 +71,6 @@ export default function Filters({
         </div>
 
         <div className="p-6 flex flex-col gap-6">
-          {/* Search */}
-          {/* <input
-            type="text"
-            className="w-full border-gray-300 shadow-md py-2 px-4 rounded-3xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
-            placeholder="Search by name"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          /> */}
-
           {/* Subcategories */}
           {subcategories.length > 0 && (
             <ul className="flex flex-col gap-2">

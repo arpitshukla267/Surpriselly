@@ -138,7 +138,7 @@ useEffect(() => {
   return (
     <div
       id="page3-section"
-      className="bg-purple-50 py-12 mb-[-6rem] lg:px-8 min-h-auto"
+      className="bg-purple-50 py-12 lg:mb-[-2rem] mb-[-4rem] lg:px-8 min-h-auto"
     >
       <Cards
         title="Tech & Products"
@@ -164,7 +164,7 @@ useEffect(() => {
               <img
                 src={item.image}
                 alt={item.title}
-                className="w-full h-24 md:h-44 object-contain rounded-lg"
+                className="w-full h-24 md:h-44 object-fit rounded-lg"
               />
               <button
                 className="absolute top-3 right-3 bg-white p-1.5 rounded-full shadow group-hover:scale-105 transition"
