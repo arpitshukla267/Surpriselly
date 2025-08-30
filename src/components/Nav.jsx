@@ -43,19 +43,33 @@ export default function Nav() {
   const currentCategoryRaw = new URLSearchParams(location.search).get("category") || "";
   const currentCategory = decodeURIComponent(currentCategoryRaw).trim();
   const [scrolled, setScrolled] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
-    window.scrollTo(0, 0); // scroll to top on mount
-
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50); // you can adjust threshold
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY && currentScrollY > 10) {
+        // scrolling down → collapse
+        setScrolled(true);
+      } else if (currentScrollY < lastScrollY) {
+        // scrolling up → expand
+        setScrolled(false);
+      }
+
+      setLastScrollY(currentScrollY);
     };
 
     window.addEventListener("scroll", handleScroll);
-
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
+  useEffect(() => {
+  window.scrollTo(0, 0);
+  const onScroll = () => setScrolled(window.scrollY > 10);
+  window.addEventListener("scroll", onScroll);
+  return () => window.removeEventListener("scroll", onScroll);
+}, []);
 
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
@@ -72,31 +86,6 @@ export default function Nav() {
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
-const handleSearch = () => {
-  const term = searchTerm.trim().toLowerCase();
-  if (!term) return;
-
-  // Find matching products
-  const matches = allProducts.filter(
-    (p) =>
-      p.title.toLowerCase().includes(term) ||
-      p.slug.toLowerCase().includes(term)
-  );
-
-  if (matches.length === 1) {
-    // ✅ Directly open Product Detail Page
-    navigate(`/product/${matches[0].slug}`);
-  } else if (matches.length > 1) {
-    // ✅ Multiple matches → go to Store page
-    navigate(`/store?search=${encodeURIComponent(searchTerm.trim())}`);
-  } else {
-    // ❌ No matches
-    toast.error("No products found!");
-  }
-
-  setMobileMenuOpen(false);
-};
-
 
   const handleCategoryClick = (cat) => {
     navigate(`/store?category=${encodeURIComponent(cat.trim())}`);
@@ -104,14 +93,15 @@ const handleSearch = () => {
   };
 
   return (
-    <header className={`fixed top-0 left-0 w-full z-50 pb-0 md:pb-3 bg-white scrolled ? "h-10 md:h-14" : "h-16 md:h-20"}`}>
-      {/* Top Row */}
-      <div className="max-w-7xl mx-auto lg:px-4 lg:py-4 flex items-center justify-between bg-white">
+    <header
+      className={`fixed top-0 left-0 w-full z-50 bg-white transition-all duration-300`}
+    >     
+    
+     {/* Top Row */}
+      <div className={`max-w-7xl mx-auto lg:px-4 flex items-center justify-between bg-white duration-300 ${scrolled ? "lg:py-2" : "lg:py-4"}`}>
         <a href="/" className="hidden md:flex items-center gap-2 shrink-0">
           <img src={logo} alt="Logo" className="h-14" />
         </a>
-
-
 
         {/* Search bar - Desktop */}
         <div className="hidden md:block flex-1 mx-6 bg-white">
@@ -163,22 +153,30 @@ const handleSearch = () => {
             </button>
 
             {profileDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow-lg z-50">
+              <div className="absolute right-0 mt-2 w-32 bg-purple-300 rounded shadow-lg z-50">
                 <button
                   onClick={() => {
                     navigate("/login");
                     setProfileDropdownOpen(false);
                   }}
-                  className="block w-full text-left px-4 py-2 text-sm hover:bg-purple-100"
+                  className="block w-full text-left px-4 py-2 text-sm hover:bg-purple-100 hover:cursor-pointer"
                 >
                   Login
+                </button>
+                <button
+                  onClick={() => {
+                    setProfileDropdownOpen(false);
+                  }}
+                  className="block w-full text-left h-px text-sm bg-white hover:bg-purple-100"
+                >
+                  
                 </button>
                 <button
                   onClick={() => {
                     navigate("/signup");
                     setProfileDropdownOpen(false);
                   }}
-                  className="block w-full text-left px-4 py-2 text-sm hover:bg-purple-100"
+                  className="block w-full text-left px-4 py-2 text-sm hover:bg-purple-100 hover:cursor-pointer"
                 >
                   Signup
                 </button>
@@ -186,33 +184,6 @@ const handleSearch = () => {
             )}
           </div>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         {/* Mobile Menu Button */}
@@ -252,14 +223,16 @@ const handleSearch = () => {
       </div>
 
       {/* Desktop Category Strip */}
-      <div className="bg-white text-black p-2 font-medium text-sm shadow-md hidden md:flex">
-        <div className="max-w-7xl mx-auto px-6 py-2 flex flex-wrap gap-12">
+      <div className={`bg-purple-500 text-white font-bold duration-300 text-sm shadow-md hidden md:flex ${
+        scrolled ? "p-1" : "p-2"
+      }`}>
+        <div className="max-w-7xl mx-auto flex flex-wrap gap-10">
           {categoriesBottom.map((cat, i) => (
             <button
               key={i}
               onClick={() => handleCategoryClick(cat)}
-              className={`cursor-pointer hover:text-purple-700 whitespace-nowrap ${
-                currentCategory === cat.trim() ? "text-purple-700 font-semibold underline" : ""
+              className={`cursor-pointer hover:bg-purple-600 py-2 px-3 rounded-lg whitespace-nowrap duration-200 ${
+                currentCategory === cat.trim() ? "bg-purple-800 font-semibold" : ""
               }`}
             >
               {cat}

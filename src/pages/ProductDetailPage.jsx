@@ -68,7 +68,7 @@ export default function ProductDetailPage() {
           <img
             src={product.image || "/placeholder.png"}
             // alt={product.title}
-            className="w-full h-84 object-fit rounded-xl shadow"
+            className="w-full h-84 object-contain rounded-xl"
           />
         </div>
 

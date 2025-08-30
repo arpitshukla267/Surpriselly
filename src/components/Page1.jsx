@@ -107,7 +107,7 @@ export default function Page1() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center mt-[2rem] px-4 lg:px-0 lg:mt-[9rem] bg-white text-black">
+    <div className="flex flex-col items-center justify-center mt-[2rem] px-4 lg:px-0 lg:mt-[7rem] bg-white text-black">
       
       {/* ✅ Fixed Horizontal Scroll Section */}
       <div className="md:hidden w-full overflow-x-auto mt-5 mb-0 flex flex-col  scrollbar-hide">
@@ -151,9 +151,7 @@ export default function Page1() {
 
       {/* ── Hero Section ── */}
       <div
-        className="relative w-full max-w-screen-xl mb-8 lg:mb-5 md:mb-5 overflow-hidden rounded-3xl shadow-lg my-0"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
+        className="relative w-full max-w-screen-xl mb-8 lg:mb-0 overflow-hidden rounded-3xl shadow-lg my-0"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
@@ -161,7 +159,7 @@ export default function Page1() {
           {slides.map((slide, i) => (
             <div
               key={slide.id}
-              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${
                 i === current ? "opacity-100 z-10" : "opacity-0 z-0"
               }`}
               style={{
@@ -170,8 +168,10 @@ export default function Page1() {
                 backgroundPosition: "center",
               }}
             >
-              <div className="bg-black/40 w-full h-full flex items-center justify-start px-14 rounded-3xl">
-                <div className="max-w-md text-white space-y-2 sm:space-y-3 animate-slide-text">
+              <div className=" w-full h-full flex items-center justify-start md:px-14 px-4 rounded-3xl">
+                <div className="relative md:max-w-md p-5 rounded-2xl backdrop-blur-xs md:backdrop-blur-md text-white space-y-2 sm:space-y-3 animate-slide-text overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-black/0 pointer-events-none" />
+                  
                   <h2 className="text-xl sm:text-2xl md:text-4xl font-bold">
                     {slide.heading}
                   </h2>

@@ -148,10 +148,10 @@ export default function Page8() {
               <img
                 src={item.image}
                 alt={item.title}
-                className="w-full h-24 md:h-44 object-fit rounded-lg"
+                className="w-full h-34 md:h-44 object-fit rounded-lg"
               />
               <button
-                className="absolute top-2 right-1 bg-white p-1.5 rounded-full shadow group-hover:scale-105 transition"
+                className="absolute top-4 right-4 bg-white p-1.5 rounded-full shadow group-hover:scale-105 transition"
                 onClick={(e) => handleWishlistToggle(e, item)}
               >
                 <FaHeart

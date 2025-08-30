@@ -12,7 +12,6 @@ import Page7 from './Page7'
 import Page8 from './Page8'
 import EventBanner from './EventBanner'
 import Footer from './Footer'
-import BottomBar from './BottomBar'
 import LuxuryItems from './LuxuryItems'
 
 function HomePage() {
@@ -31,6 +30,7 @@ function HomePage() {
         <Page7 />
         <EventBanner />
         <Page8 />
+        <Footer />
     </div>
   )
 }

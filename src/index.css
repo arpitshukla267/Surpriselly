@@ -82,3 +82,11 @@ html {
   font-weight: 600;
   font-style: normal;
 }
+
+.fade-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
+}
+

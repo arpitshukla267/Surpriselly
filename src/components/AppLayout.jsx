@@ -16,7 +16,6 @@ export default function AppLayout() {
       <main className="pt-16">
         <Outlet /> {/* ✅ renders the matched route here */}
       </main>
-      {!shouldHideNav && <Footer />}
     </>
   );
 }

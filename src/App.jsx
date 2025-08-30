@@ -12,6 +12,7 @@ import RedirectToStoreWithFilters from './components/RedirectToStoreWithFilters'
 import OccasionShop from './pages/OccasionShop';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import SearchResults from './pages/SearchResults';
 
 export default function App() {
   const location = useLocation();
@@ -34,6 +35,7 @@ export default function App() {
           <Route path="/product/:slug" element={<ProductDetailPage />} />
           <Route path="/store/:slug" element={<RedirectToStoreWithFilters />} />
           <Route path="/shop/:name" element={<OccasionShop />} />
+          <Route path="/search" element={<SearchResults />} />
         </Route>
       </Routes>
     </>

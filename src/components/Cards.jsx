@@ -189,7 +189,7 @@ export default function Cards({
           {data.map((item, index) => (
             <div
               key={itemKey(item, index)}
-              className={`flex-shrink-0 w-[calc(100%/2.1)] h-[200px] sm:h-auto sm:w-56 md:w-64 snap-start transition-transform duration-300 ${
+              className={`flex-shrink-0 w-[calc(100%/2.1)] h-[230px] sm:h-auto sm:w-56 md:w-64 snap-start transition-transform duration-300 ${
                 selectedItem?.title === item?.title
                   ? "scale-105 border-2 border-green-500 rounded-xl"
                   : ""

@@ -3,6 +3,7 @@ import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import { useCart } from "../components/CartContext";
 import toast, { Toaster } from "react-hot-toast";
 import { useLocation } from "react-router-dom";
+import Footer from "./Footer";
 
 export default function WishlistPage() {
   const [wishlist, setWishlist] = useState([]);
@@ -74,7 +75,8 @@ export default function WishlistPage() {
   };
 
   return (
-    <div className="max-w-6xl min-h-[40vh] mx-auto mt-[2rem] lg:mt-[5rem] py-10 px-2 relative">
+    <div>
+    <div className="lg:max-w-[90%] min-h-[40vh] mx-auto mt-[3rem] lg:mt-[5rem] py-10 px-3 relative">
       <Toaster position="top-right" />
 
       {/* Confirmation Modal */}
@@ -134,7 +136,7 @@ export default function WishlistPage() {
       {wishlist.length === 0 ? (
         <p className="absolute text-center text-gray-500 top-1/2 right-1/2">No items in wishlist 💔</p>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-6 gap-1">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 lg:gap-6 gap-1">
           {wishlist.map((item, i) => (
             <div
               key={item.slug || item.title || i}
@@ -142,7 +144,7 @@ export default function WishlistPage() {
             >
               <button
                 onClick={() => removeFromWishlist(item.slug || item.title)}
-                className="absolute top-2 right-2 text-red-500 hover:text-red-700 transition"
+                className="absolute lg:top-3 top-2 right-2 lg:right-3 text-red-500 hover:text-red-700 transition text-xl"
                 title="Remove from Wishlist"
               >
                 <FaHeart />
@@ -189,6 +191,7 @@ export default function WishlistPage() {
           ))}
         </div>
       )}
+    </div>
     </div>
   );
 }

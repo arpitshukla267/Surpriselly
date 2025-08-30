@@ -149,18 +149,18 @@ export default function Categories() {
         </h2>
 
         {/* CATEGORY BAR */}
-        <div className="max-w-7xl bg-purple-50 mx-auto rounded-2xl lg:rounded-4xl p-1 mb-10 overflow-hidden relative">
-          <div className="flex md:gap-6 gap-0 overflow-x-auto flex-nowrap rounded-full bg-[#7669c1] px-1 py-1 md:px-2 md:py-2 sm:p-1">
+        <div className="lg:max-w-[90%] max-w-7xl bg-purple-50 mx-auto rounded-2xl lg:rounded-4xl p-1 mb-10 overflow-hidden relative">
+          <div className="flex md:gap-6 gap-2 overflow-x-auto lg:space-x-5 flex-nowrap rounded-full bg-purple-700 px-1 py-1 md:px-2 md:py-2 sm:p-1">
             {categories.map((cat) => {
               const selected = activeCategory === cat.name;
               return (
                 <button
                   key={cat.name}
                   onClick={() => switchCategory(cat.name)}
-                  className={`flex-shrink-0 flex items-center gap-1 sm:gap-2 md:px-3 md:py-2 px-2 py-1 rounded-full text-sm sm:text-xl font-medium transition-all duration-200 ${
+                  className={`flex-shrink-0 flex items-center gap-1 sm:gap-2 md:px-5 md:py-2 px-2 py-1 rounded-full text-sm focus:ring-0 sm:text-xl font-medium transition-all duration-200 ${
                     selected
-                      ? "bg-white text-[#7669c1] shadow"
-                      : "bg-[#7669c1] text-white hover:cursor-pointer"
+                      ? "bg-white text-purple-500 shadow"
+                      : "bg-purple-700 text-white hover:cursor-pointer"
                   }`}
                 >
                   <span className="text-lg">{cat.icon}</span>
@@ -172,82 +172,82 @@ export default function Categories() {
         </div>
 
         {/* GIFTS GRID */}
-      <div className="max-w-6xl mx-auto flex overflow-x-auto gap-3 pb-2 px-1 snap-x scroll-smooth sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 sm:overflow-x-visible">
-  {isLoading ? (
-    Array(4)
-      .fill(0)
-      .map((_, i) => (
-        <div
-          key={i}
-          className="w-[100%] flex-shrink-0 snap-start sm:w-auto sm:flex-shrink sm:snap-none animate-pulse bg-white rounded-xl p-4 shadow"
-        >
-          <div className="h-44 bg-gray-200 rounded-lg mb-4"></div>
-          <div className="h-4 bg-gray-200 rounded w-2/3 mb-2"></div>
-          <div className="h-4 bg-gray-200 rounded w-5/6 mb-4"></div>
-          <div className="h-6 bg-gray-200 rounded w-1/2"></div>
-        </div>
-      ))
-  ) : categoryGifts[activeCategory]?.length ? (
-    categoryGifts[activeCategory].map((gift, idx) => {
-      const isLiked = wishlist.some((i) => i.slug === gift.slug);
-      return (
-        <Link
-          to={`/product/${gift.slug}`}
-          key={idx}
-          className="w-40 md:w-[75%] lg:h-88 flex-shrink-0 snap-start sm:w-auto sm:flex-shrink sm:snap-none bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-transform duration-200 hover:-translate-y-1"
-        >
-          <div className="relative h-40 md:h-[65%] w-40 md:w-full bg-gray-100">
-            {gift.image ? (
-              <img
-                src={gift.image}
-                alt={gift.title}
-                className="h-full w-full object-full"
-              />
-            ) : (
-              <div className="flex items-center justify-center h-full text-gray-400">
-                No Image
+      <div className="lg:max-w-[90%] max-w-6xl mx-auto flex overflow-x-auto gap-3 pb-2 px-1 snap-x scroll-smooth sm:grid sm:grid-cols-2 md:grid-cols-3 lg:flex lg:flex-wrap lg:gap-6 sm:overflow-x-visible">
+        {isLoading ? (
+          Array(4)
+            .fill(0)
+            .map((_, i) => (
+              <div
+                key={i}
+                className="w-[100%] flex-shrink-0 snap-start sm:w-auto sm:flex-shrink sm:snap-none animate-pulse bg-white rounded-xl p-4 shadow"
+              >
+                <div className="h-44 bg-gray-200 rounded-lg mb-4"></div>
+                <div className="h-4 bg-gray-200 rounded w-2/3 mb-2"></div>
+                <div className="h-4 bg-gray-200 rounded w-5/6 mb-4"></div>
+                <div className="h-6 bg-gray-200 rounded w-1/2"></div>
               </div>
-            )}
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                toggleWishlist(gift);
-              }}
-              className="absolute top-2 right-2 bg-white p-1.5 rounded-full shadow hover:scale-105 transition"
-            >
-              {isLiked ? (
-                <FaHeart className="text-red-500" />
-              ) : (
-                <FaRegHeart className="text-gray-500 hover:text-red-500" />
-              )}
-            </button>
+            ))
+        ) : categoryGifts[activeCategory]?.length ? (
+          categoryGifts[activeCategory].map((gift, idx) => {
+            const isLiked = wishlist.some((i) => i.slug === gift.slug);
+            return (
+              <Link
+                to={`/product/${gift.slug}`}
+                key={idx}
+                className="w-40 md:w-[20%] lg:h-88 flex-shrink-0 snap-start sm:w-auto sm:flex-shrink sm:snap-none bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-transform duration-200 hover:-translate-y-1"
+              >
+                <div className="relative h-40 md:h-[65%] w-40 md:w-full bg-gray-100">
+                  {gift.image ? (
+                    <img
+                      src={gift.image}
+                      alt={gift.title}
+                      className="h-full w-full object-full"
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center h-full text-gray-400">
+                      No Image
+                    </div>
+                  )}
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleWishlist(gift);
+                    }}
+                    className="absolute top-2 right-2 bg-white p-1.5 rounded-full shadow hover:scale-105 transition"
+                  >
+                    {isLiked ? (
+                      <FaHeart className="text-red-500" />
+                    ) : (
+                      <FaRegHeart className="text-gray-500 hover:text-red-500" />
+                    )}
+                  </button>
+                </div>
+      
+                <div className="md:p-3 px-2 mt-0 flex flex-col ">
+                  <div className="text-xs text-purple-600 mb-1 mt-2">
+                    ⭐ {gift.rating} | {gift.reviews}
+                  </div>
+                  <div className="font-medium text-sm sm:text-base line-clamp-2 mb-0 md:mb-1">
+                    {gift.title}
+                  </div>
+                  <div className="lg:text-sm text-xs font-bold text-gray-800 mb-2 ">
+                    ₹{gift.price}
+                    {gift.originalPrice && (
+                      <span className=" text-gray-400 line-through ml-2">
+                        ₹{gift.originalPrice}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </Link>
+            );
+          })
+        ) : (
+          <div className="col-span-full text-center text-gray-500">
+            No gifts available for {activeCategory}.
           </div>
-
-          <div className="md:p-3 px-2 mt-0 flex flex-col ">
-            <div className="text-xs text-purple-600 mb-1 mt-2">
-              ⭐ {gift.rating} | {gift.reviews}
-            </div>
-            <div className="font-medium text-sm sm:text-base line-clamp-2 mb-0 md:mb-1">
-              {gift.title}
-            </div>
-            <div className="lg:text-sm text-xs font-bold text-gray-800 mb-2 ">
-              ₹{gift.price}
-              {gift.originalPrice && (
-                <span className=" text-gray-400 line-through ml-2">
-                  ₹{gift.originalPrice}
-                </span>
-              )}
-            </div>
-          </div>
-        </Link>
-      );
-    })
-  ) : (
-    <div className="col-span-full text-center text-gray-500">
-      No gifts available for {activeCategory}.
-    </div>
-  )}
-</div>
+        )}
+      </div>
 
 
         {/* View More */}
