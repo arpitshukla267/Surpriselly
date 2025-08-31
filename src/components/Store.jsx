@@ -282,7 +282,7 @@ export default function Store() {
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
   const [maxPrice, setMaxPrice] = useState(20000);
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 6;
+  const productsPerPage = 8;
 
 
   const combinedProducts = [...new Map(allCombinedRaw.map(p => [p.slug, p])).values()];
@@ -365,95 +365,37 @@ if (sortRange) {
   
 
   return (
-    <div className="max-w-6xl mt-[2rem] lg:mt-[6rem] mx-auto lg:px-6 py-10">
-      <Toaster position="top-right" />
-      <div className="flex justify-between ">
-        <h1 className="lg:text-3xl text-xl text-white font-bold text-center mb-6">hlo</h1>
-        <h1 className="lg:text-3xl text-xl font-bold text-center mb-6">🛍️ {selectedCategory} Store</h1>
+    <div className="h-screen lg:flex lg:gap-10 md:max-w-full mt-[2rem] lg:mt-[6rem] mx-auto lg:px-6 lg:py-0 py-10">
+      <div className="hidden lg:block max-w-96 sticky top-24 h-[calc(100vh-6rem)] border-r pr-4">
         <Filters
           subcategories={subcategories}
           selectedSubcategory={selectedSubcategory}
           setSelectedSubcategory={setSelectedSubcategory}
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          maxPrice={maxPrice}
-          setMaxPrice={setMaxPrice}
-          sortRange={sortRange}             
-          setSortRange={setSortRange}      
+          sortRange={sortRange}
+          setSortRange={setSortRange}
         />
       </div>
-    <div className="lg:block hidden">
-      {subcategories.length > 0 && (
-        <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
-          <button
-            onClick={() => setSelectedSubcategory(null)}
-            className={clsx(
-              "px-4 py-1 rounded-full border text-sm font-semibold",
-              selectedSubcategory === null
-                ? "bg-purple-500 text-white"
-                : "bg-white text-purple-500 hover:bg-purple-50 hover:cursor-pointer"
-            )}
-          >
-            All
-          </button>
-          <span className="text-gray-400 font-bold">|</span>
-          {subcategories.map((sub) => (
-            <button
-              key={sub}
-              className={clsx(
-                "px-4 py-1 rounded-full border text-sm hover:cursor-pointer",
-                selectedSubcategory === sub
-                  ? "bg-purple-600 text-white"
-                  : "bg-white border-purple-300 text-purple-700 hover:bg-purple-100"
-              )}
-              onClick={() => setSelectedSubcategory(sub)}
-            >
-              {sub}
-            </button>
-          ))}
-        </div>
-      )}
-
-      <div className="grid md:grid-cols-2 gap-6 mb-8">
-        <input
-          type="text"
-          className="w-full  border-gray-300 shadow-md py-0 px-4 rounded-3xl"
-          placeholder="Search by name"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <div>
-          <label className="block mb-0 text-sm font-semibold text-gray-700">
-            Max Price: <span className="text-purple-600 font-bold">₹{maxPrice}</span>
-          </label>
-          
-          <input
-            type="range"
-            min="0"
-            max="20000"
-            value={maxPrice}
-            onChange={(e) => setMaxPrice(Number(e.target.value))}
-            className="
-              w-full h-3 rounded-full
-              bg-gradient-to-r from-purple-400 via-pink-400 to-red-400
-              accent-purple-600
-              cursor-pointer
-              hover:opacity-90
-              focus:outline-none focus:ring-2 focus:ring-purple-500
-              transition-all duration-300
-            "
+      <Toaster position="top-right" />
+      <div className="flex flex-col md:overflow-y-auto">
+      <div className="flex justify-center items-center">
+        <h1 className="lg:text-3xl text-xl font-bold text-center mb-6">🛍️ {selectedCategory} Store</h1>
+        <div className="md:hidden md:w-full">
+          <Filters
+            subcategories={subcategories}
+            selectedSubcategory={selectedSubcategory}
+            setSelectedSubcategory={setSelectedSubcategory}
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            maxPrice={maxPrice}
+            setMaxPrice={setMaxPrice}
+            sortRange={sortRange}             
+            setSortRange={setSortRange}      
           />
-          
-          <div className="flex justify-between text-xs text-gray-500 mt-1">
-            <span>₹0</span>
-            <span>₹20,000</span>
-          </div>
         </div>
       </div>
-    </div>
 
 
-      <div className="flex flex-row flex-wrap sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
+      <div className="flex flex-wrap w-full md:grid-cols-3 lg:grid-cols-2 lg:gap-6">
         {paginatedProducts.length === 0 ? (
           <p className="absolute col-span-full text-center w-full top-1/2">No matching products.</p>
         ) : (
@@ -467,17 +409,17 @@ if (sortRange) {
                 <img
                   src={item.image || item.img}
                   alt={item.title}
-                  className="md:w-[250px] w-full h-36 md:h-48 object-cover rounded-lg"
+                  className="md:w-[250px] w-full h-40 md:h-48 object-cover rounded-lg"
                 />
-                <h3 className="md:text-lg text-xs lg:font-semibold lg:mt-3">{item.title}</h3>
-                <p className="text-purple-700 font-semibold text-sm md:text-xl">₹{item.price || item.amount}</p>
+                <h3 className="md:text-lg text-sm lg:font-semibold lg:mt-3">{item.title}</h3>
+                <p className="text-purple-700 font-semibold text-sm my-1 md:text-xl">₹{item.price || item.amount}</p>
 
                 <button
                   onClick={() => {
                     toggleWishlist(item);
                     toast.success(`${wished ? "Removed from" : "Added to"} Wishlist: ${item.title}`);
                   }}
-                  className={`absolute top-3 right-3 text-2xl transition-transform duration-300 ${
+                  className={`absolute top-3 right-4 text-2xl transition-transform duration-300 ${
                     wished ? "text-red-500 scale-110" : "text-gray-900 hover:scale-110"
                   }`}
                 >
@@ -500,7 +442,7 @@ if (sortRange) {
       </div>
 
       {totalPages > 1 && (
-        <div className="flex justify-center gap-4 mt-6">
+        <div className="flex justify-center gap-4 mt-6 ">
           <button
             onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
             disabled={currentPage === 1}
@@ -520,6 +462,7 @@ if (sortRange) {
           </button>
         </div>
       )}
+      </div>
     </div>
   );
 }
