@@ -160,7 +160,7 @@ export default function Categories() {
                   className={`flex-shrink-0 flex items-center gap-1 sm:gap-2 md:px-5 md:py-2 px-2 py-1 rounded-full text-sm focus:ring-0 sm:text-xl font-medium transition-all duration-200 ${
                     selected
                       ? "bg-white text-purple-500 shadow"
-                      : "bg-purple-700 text-white hover:cursor-pointer"
+                      : "bg-purple-700 text-white hover:cursor-pointer hover:bg-purple-900"
                   }`}
                 >
                   <span className="text-lg">{cat.icon}</span>

@@ -173,7 +173,7 @@ export default function Cart() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
+              className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 lg:px-0 px-10"
             >
               <motion.div
                 initial={{ scale: 0.8 }}
@@ -189,16 +189,16 @@ export default function Cart() {
                 </p>
                 <div className="flex justify-between">
                   <button
-                    onClick={() => setShowModal(false)}
-                    className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded"
-                  >
-                    Cancel
-                  </button>
-                  <button
                     onClick={handleRemoveAll}
                     className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded"
                   >
                     Yes, Remove All
+                  </button>
+                  <button
+                    onClick={() => setShowModal(false)}
+                    className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded"
+                  >
+                    Cancel
                   </button>
                 </div>
               </motion.div>

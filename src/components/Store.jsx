@@ -252,7 +252,14 @@ const subcategoryMap = {
   "Jewellery": ["Necklace", "Earrings", "Rings"],
   "Pets & Gifts": ["Pet Food", "Toys", "Clothes"],
   "Occasions": ["Birthday", "Anniversary", "Love Once", "Congratulations", "Thank You"],
+
+  // 🌸 Newly Added
+  "Flowers": ["Bouquets", "Baskets", "Decorative"],
+  "Plants": ["Indoor", "Outdoor", "Decorative"],
+  "Hampers": ["Sweet Treats", "Luxury", "Wellness"],
+  "Handmade": ["Decor", "Fashion", "Crafts"],
 };
+
 
 export default function Store() {
   const location = useLocation();
@@ -448,7 +455,7 @@ if (sortRange) {
 
       <div className="flex flex-row flex-wrap sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
         {paginatedProducts.length === 0 ? (
-          <p className="col-span-full text-center">No matching products.</p>
+          <p className="absolute col-span-full text-center w-full top-1/2">No matching products.</p>
         ) : (
           paginatedProducts.map((item) => {
             const wished = isInWishlist(item.slug);

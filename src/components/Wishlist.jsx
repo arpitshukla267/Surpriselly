@@ -81,7 +81,7 @@ export default function WishlistPage() {
 
       {/* Confirmation Modal */}
       {showConfirmModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-transparent bg-opacity-40 backdrop-blur-sm transition-opacity duration-300">
+        <div className="fixed inset-0 z-50 flex px-10 md:px-0 items-center justify-center bg-transparent bg-opacity-40 backdrop-blur-sm transition-opacity duration-300">
           <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-sm text-center animate-scale-in">
             <h2 className="text-lg font-semibold text-gray-800 mb-4">
               Are you sure you want to clear your wishlist?

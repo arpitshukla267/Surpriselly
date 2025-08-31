@@ -18,6 +18,7 @@ import { useWishlist } from "../components/WishlistContext";
 import { useProduct } from "../components/ProductContext";
 import { useAuth } from "../components/AuthContext"; // ✅ import stays here
 import SearchBar from "./ui/SearchBar";
+import UserLocation from "./ui/UserLocation";
 
 const categoriesBottom = [
   "Personalized Gifts",
@@ -44,6 +45,7 @@ export default function Nav() {
   const currentCategory = decodeURIComponent(currentCategoryRaw).trim();
   const [scrolled, setScrolled] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -115,10 +117,8 @@ export default function Nav() {
           >
             Same Day Delivery <FaMotorcycle className="inline ml-1" />
           </button>
-          <div className="flex items-center gap-2 font-medium text-purple-700">
-            <FaMapMarkerAlt className="text-red-600" />
-            <span>Jhansi</span>
-          </div>
+            <UserLocation />
+
           <NavLink to="/cart" className="relative">
             <FaShoppingCart className="text-2xl text-purple-700 hover:text-green-600" />
             {cart.length > 0 && (
@@ -135,12 +135,12 @@ export default function Nav() {
               </span>
             )}
           </NavLink>
-          <button className="relative">
+          {/* <button className="relative">
             <FaBell className="text-2xl text-purple-700 hover:scale-110 transition" />
             <span className="absolute -top-1 -right-2 h-4 w-4 text-[10px] bg-red-600 text-white rounded-full grid place-content-center">
               0
             </span>
-          </button>
+          </button> */}
 
           {/* 👤 Profile Dropdown */}
           <div className="relative profile-dropdown">
@@ -196,7 +196,7 @@ export default function Nav() {
           </button>
 
           <div className="flex justify-center items-center gap-6">
-            <FaMapMarkerAlt className="text-2xl text-purple-600" />
+            <UserLocation />
             <NavLink to="/wishlist" className="relative">
               <FaHeart className="text-2xl text-purple-700 hover:text-red-600" />
               {wishlist.length > 0 && (
