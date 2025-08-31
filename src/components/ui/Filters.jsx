@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import clsx from "clsx";
-import { Menu, X } from "lucide-react";
+import { Filter, X, SortAsc } from "lucide-react";
 
 export default function Filters({
   subcategories = [],
@@ -37,21 +37,21 @@ export default function Filters({
   return (
     <div className="lg:hidden">
       {/* Bottom Buttons */}
-      <div className="md:hidden flex justify-end mb-4 px-4">
+      <div className="md:hidden flex justify-end px-4">
         {/* Sort Button */}
         <button
           onClick={() => setShowSortSidebar(true)}
-          className="fixed z-99 bottom-0 left-0 gap-2 text-white flex items-center justify-center border-r-2 border-white backdrop-blur-2xl bg-pink-500/50 py-2 px-4 w-[50%] font-bold hover:bg-purple-700 transition"
+          className="fixed z-99 bottom-0 left-0 gap-2 text-lg text-white flex items-center justify-center border-r-2 border-white backdrop-blur-2xl bg-purple-600/60 py-2 px-4 w-[50%] font-bold hover:bg-purple-700 transition"
         >
-          <Menu size={22} /> Sort
+          <SortAsc size={22} /> Sort
         </button>
 
         {/* Filter Button */}
         <button
           onClick={() => setShowFilterSidebar(true)}
-          className="fixed z-99 bottom-0 right-0 text-white flex items-center justify-center gap-2 backdrop-blur-2xl bg-pink-500/50 py-2 px-4 w-[50%] font-bold hover:bg-purple-700 transition"
+          className="fixed z-99 bottom-0 right-0 text-lg text-white flex items-center justify-center gap-2 backdrop-blur-2xl bg-purple-600/60 py-2 px-4 w-[50%] font-bold hover:bg-purple-700 transition"
         >
-          <Menu size={22} /> Filter
+          <Filter size={22} /> Filter
         </button>
       </div>
 

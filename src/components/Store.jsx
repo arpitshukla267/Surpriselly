@@ -369,7 +369,7 @@ if (sortRange) {
       <Toaster position="top-right" />
       <div className="flex justify-between ">
         <h1 className="lg:text-3xl text-xl text-white font-bold text-center mb-6">hlo</h1>
-        <h1 className="lg:text-3xl text-xl font-bold text-center mb-6">🛍️ Product Store</h1>
+        <h1 className="lg:text-3xl text-xl font-bold text-center mb-6">🛍️ {selectedCategory} Store</h1>
         <Filters
           subcategories={subcategories}
           selectedSubcategory={selectedSubcategory}

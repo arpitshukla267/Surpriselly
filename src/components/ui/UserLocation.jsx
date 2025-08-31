@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { MapPin } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -6,6 +6,8 @@ export default function LocationModal() {
   const [showModal, setShowModal] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [address, setAddress] = useState("Noida, Sector 62, UP");
+  const [isMobile, setIsMobile] = useState(false);
+  const [showBlock, setShowBlock] = useState(false);
 
   // Form states
   const [house, setHouse] = useState("");
@@ -15,12 +17,31 @@ export default function LocationModal() {
   const [state, setState] = useState("");
   const [pin, setPin] = useState("");
 
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // build full address
     const fullAddress = `${house}, ${area}, ${city}, ${district}, ${state} - ${pin}`;
     setAddress(fullAddress);
     setShowModal(false);
+  };
+
+  // Long press logic
+  const handlePressStart = () => {
+    timerRef.current = setTimeout(() => {
+      setShowBlock(true);
+    }, 2000); // 2 sec
+  };
+
+  const handlePressEnd = () => {
+    clearTimeout(timerRef.current);
   };
 
   return (
@@ -29,16 +50,20 @@ export default function LocationModal() {
       <div
         className="relative cursor-pointer"
         onClick={() => setShowModal(true)}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
+        onMouseEnter={() => !isMobile && setHovered(true)}
+        onMouseLeave={() => !isMobile && setHovered(false)}
+        onMouseDown={handlePressStart}
+        onMouseUp={handlePressEnd}
+        onTouchStart={handlePressStart}
+        onTouchEnd={handlePressEnd}
       >
         <MapPin className="w-6 h-6 text-purple-600 hover:scale-110 transition-transform" />
 
-        {/* Address tooltip on hover */}
+        {/* Address tooltip on hover (desktop only) */}
         <AnimatePresence>
-          {hovered && (
+          {!isMobile && hovered && (
             <motion.div
-              className="absolute -left-10 top-1/3 translate-y-1/3 border-none
+              className="absolute -left-10 top-1/3 border-none translate-y-1/3
                          bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 
                          shadow-xl px-5 py-4 rounded-2xl text-white z-20 
                          min-w-[220px] border border-white/20"
@@ -55,28 +80,49 @@ export default function LocationModal() {
           )}
         </AnimatePresence>
 
+        {/* Long press block (mobile only) */}
+        <AnimatePresence>
+          {isMobile && showBlock && (
+            <motion.div
+              className="absolute left-0 top-10 bg-purple-600 text-white p-3 rounded-xl shadow-lg z-30"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+            >
+              📍 Your Address <br />
+              <span className="font-semibold">{address}</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Modal */}
         <AnimatePresence>
           {showModal && (
             <motion.div
-              className="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
+              className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 px-4 rounded-2xl"
+              onClick={() => setShowModal(false)} // close on backdrop
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
               {/* Modal Box */}
               <motion.div
-                className="bg-white p-6 rounded-xl shadow-lg w-[95%] max-w-lg relative"
-                initial={{ scale: 0.8, opacity: 0, y: -50 }}
-                animate={{ scale: 1, opacity: 1, y: 0 }}
-                exit={{ scale: 0.8, opacity: 0, y: 50 }}
+                onClick={(e) => e.stopPropagation()} // prevent closing on modal click
+                className={`bg-white shadow-lg relative ${
+                  isMobile
+                    ? "w-full max-h-[90%] h-auto absolute bottom-0 rounded-t-2xl p-6"
+                    : "p-6 w-[95%] max-w-lg rounded-xl"
+                }`}
+                initial={isMobile ? { y: "100%" } : { scale: 0.8, opacity: 0, y: -50 }}
+                animate={isMobile ? { y: 0 } : { scale: 1, opacity: 1, y: 0 }}
+                exit={isMobile ? { y: "100%" } : { scale: 0.8, opacity: 0, y: 50 }}
                 transition={{ type: "spring", stiffness: 200, damping: 20 }}
               >
                 {/* Close Button */}
                 <button
+                  type="button" // ✅ prevents form submit
                   onClick={() => setShowModal(false)}
-                  className="absolute top-3 right-3 text-gray-500 hover:text-red-500 transition hover:cursor-pointer"
+                  className="absolute top-3 right-3 text-gray-500 hover:text-red-500 transition"
                 >
                   ✕
                 </button>
@@ -87,7 +133,12 @@ export default function LocationModal() {
                 </h2>
 
                 {/* Address Form */}
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <form
+                  onSubmit={handleSubmit}
+                  className={`grid gap-4 ${
+                    isMobile ? "grid-cols-1" : "grid-cols-1 md:grid-cols-2"
+                  }`}
+                >
                   {/* House / Flat / Building */}
                   <div className="col-span-2">
                     <label className="block text-sm font-medium text-gray-600 mb-1">
