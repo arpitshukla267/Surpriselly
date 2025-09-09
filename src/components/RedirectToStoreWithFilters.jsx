@@ -19,5 +19,5 @@ export default function RedirectToStoreWithFilters() {
     }
   }, [slug, getProductBySlug, navigate]);
 
-  return null; // no UI needed
+  return null; 
 }
