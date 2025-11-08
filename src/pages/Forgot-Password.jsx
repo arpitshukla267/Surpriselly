@@ -20,7 +20,7 @@ export default function ForgotPassword() {
     try {
       setLoading(true);
       const res = await axios.post(
-        "http://localhost:5000/api/auth/forgot-password-otp",
+        "https://surpriselly-backend.onrender.com/api/auth/forgot-password-otp",
         { email }
       );
       alert(res.data.message || "OTP sent!");
@@ -41,7 +41,7 @@ export default function ForgotPassword() {
     try {
       setLoading(true);
       const res = await axios.post(
-        "http://localhost:5000/api/auth/verify-otp",
+        "https://surpriselly-backend.onrender.com/api/auth/verify-otp",
         { email, otp: code }
       );
 
@@ -64,7 +64,7 @@ export default function ForgotPassword() {
     try {
       setLoading(true);
       const res = await axios.post(
-        "http://localhost:5000/api/auth/reset-password",
+        "https://surpriselly-backend.onrender.com/api/auth/reset-password",
         { newPassword, token: resetToken }
       );
         
