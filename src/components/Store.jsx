@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import clsx from "clsx";
 import { useCart } from "../components/CartContext";
 import { useWishlist } from "../components/WishlistContext";
 import { useProduct } from "../components/ProductContext";
@@ -365,8 +364,8 @@ if (sortRange) {
   
 
   return (
-    <div className="h-screen lg:flex lg:gap-10 md:max-w-full mt-[2rem] lg:mt-[6rem] mx-auto lg:px-6 lg:py-0 py-10">
-      <div className="hidden lg:block max-w-96 sticky top-24 h-[calc(100vh-6rem)] border-r pr-4">
+    <div className="min-h-screen lg:flex lg:gap-8 max-w-full mt-[2rem] lg:mt-[6rem] mx-auto lg:px-6 lg:py-0 py-10">
+      <div className="hidden lg:block w-80 flex-shrink-0 sticky top-24 h-[calc(100vh-6rem)] border-r border-gray-200 pr-6 overflow-y-auto">
         <Filters
           subcategories={subcategories}
           selectedSubcategory={selectedSubcategory}
@@ -376,92 +375,173 @@ if (sortRange) {
         />
       </div>
       <Toaster position="top-right" />
-      <div className="flex flex-col md:overflow-y-auto">
-      <div className="flex justify-center items-center">
-        <h1 className="lg:text-3xl text-xl font-bold text-center mb-6">🛍️ {selectedCategory} Store</h1>
-        <div className="md:hidden md:w-full">
-          <Filters
-            subcategories={subcategories}
-            selectedSubcategory={selectedSubcategory}
-            setSelectedSubcategory={setSelectedSubcategory}
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            maxPrice={maxPrice}
-            setMaxPrice={setMaxPrice}
-            sortRange={sortRange}             
-            setSortRange={setSortRange}      
-          />
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Header Section */}
+        <div className="mb-6 lg:mb-8">
+          <div className="flex flex-col items-center mb-6">
+            <h1 className="text-2xl lg:text-3xl font-bold text-center mb-4 quando-regular">
+              🛍️ {selectedCategory} Store
+            </h1>
+            <div className="md:hidden w-full px-4">
+              <Filters
+                subcategories={subcategories}
+                selectedSubcategory={selectedSubcategory}
+                setSelectedSubcategory={setSelectedSubcategory}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                maxPrice={maxPrice}
+                setMaxPrice={setMaxPrice}
+                sortRange={sortRange}             
+                setSortRange={setSortRange}      
+              />
+            </div>
+          </div>
         </div>
-      </div>
 
-
-      <div className="flex flex-wrap w-full md:grid-cols-3 lg:grid-cols-2 lg:gap-6">
+        {/* Products Grid */}
         {paginatedProducts.length === 0 ? (
-          <p className="absolute col-span-full text-center w-full top-1/2">No matching products.</p>
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="text-6xl mb-4">🔍</div>
+            <p className="text-xl font-semibold text-gray-700 mb-2">No matching products.</p>
+            <p className="text-gray-500">Try adjusting your filters or search terms</p>
+          </div>
         ) : (
-          paginatedProducts.map((item) => {
-            const wished = isInWishlist(item.slug);
-            return (
-              <div
-                key={item.slug}
-                className="relative focus-none bg-white lg:rounded-xl lg:shadow p-4 flex flex-col justify-between min-h-[300px] w-[50vw] lg:w-[250px]"
-              >
-                <img
-                  src={item.image || item.img}
-                  alt={item.title}
-                  className="md:w-[250px] w-full h-40 md:h-48 object-cover rounded-lg"
-                />
-                <h3 className="md:text-lg text-sm lg:font-semibold lg:mt-3">{item.title}</h3>
-                <p className="text-purple-700 font-semibold text-sm my-1 md:text-xl">₹{item.price || item.amount}</p>
-
-                <button
-                  onClick={() => {
-                    toggleWishlist(item);
-                    toast.success(`${wished ? "Removed from" : "Added to"} Wishlist: ${item.title}`);
-                  }}
-                  className={`absolute top-3 right-4 text-2xl transition-transform duration-300 ${
-                    wished ? "text-red-500 scale-110" : "text-gray-900 hover:scale-110"
-                  }`}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-3 gap-y-6 px-2 md:gap-6 mb-8">
+            {paginatedProducts.map((item) => {
+              const wished = isInWishlist(item.slug);
+              const itemPrice = item.price || item.amount;
+              const itemOriginalPrice = item.originalPrice;
+              const hasDiscount = itemOriginalPrice && itemOriginalPrice > itemPrice;
+              
+              return (
+                <div
+                  key={item.slug}
+                  className="group relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col border border-gray-100 hover:border-purple-300"
                 >
-                  {wished ? "❤️" : "🤍"}
-                </button>
+                  {/* Product Image Container */}
+                  <div className="relative bg-gray-50 overflow-hidden">
+                    <img
+                      src={item.image || item.img}
+                      alt={item.title}
+                      className="w-full h-48 md:h-56 lg:h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    
+                    {/* Discount Badge */}
+                    {hasDiscount && (
+                      <div className="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded-lg text-xs font-bold shadow-lg">
+                        {Math.round(((itemOriginalPrice - itemPrice) / itemOriginalPrice) * 100)}% OFF
+                      </div>
+                    )}
+                    
+                    {/* Wishlist Button */}
+                    <button
+                      onClick={() => {
+                        toggleWishlist(item);
+                        toast.success(`${wished ? "Removed from" : "Added to"} Wishlist: ${item.title}`);
+                      }}
+                      className={`absolute top-3 right-3 w-5 h-5 md:w-10 md:h-10 rounded-full shadow-lg flex items-center justify-center text-2xl transition-all duration-300 hover:scale-110 ${
+                        wished ? "text-red-500" : "text-gray-400 hover:text-red-500"
+                      }`}
+                      aria-label={wished ? "Remove from wishlist" : "Add to wishlist"}
+                    >
+                      {wished ? "❤️" : "🤍"}
+                    </button>
+                  </div>
 
-                <button
-                  onClick={() => {
-                    addToCart(item);
-                    toast.success(`${item.title} added to cart!`);
-                  }}
-                  className="lg:mt-4 lg:text-lg text-sm w-full bottom-3 bg-white border-1 lg:border-2 border-purple-700 hover:bg-purple-200 duration-300 text-purple-700 font-semibold py-2 rounded-full"
-                >
-                  Add to Cart
-                </button>
-              </div>
-            );
-          })
+                  {/* Product Info */}
+                  <div className="md:p-4 p-2 flex flex-col flex-grow">
+                    <h3 className="text-sm md:text-base lg:text-lg font-semibold text-gray-900 md:mb-3">
+                      {item.title}
+                    </h3>
+                    
+                    {/* Price Section */}
+                    <div className="mt-auto space-y-1 mb-3">
+                      <div className="flex items-baseline gap-2">
+                        <p className="text-lg md:text-xl font-bold text-purple-700">
+                          ₹{itemPrice}
+                        </p>
+                        {hasDiscount && (
+                          <p className="text-sm text-gray-400 line-through">
+                            ₹{itemOriginalPrice}
+                          </p>
+                        )}
+                      </div>
+                      {item.delivery && (
+                        <p className="text-xs text-green-600 font-medium">
+                          🚚 {item.delivery}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Add to Cart Button */}
+                    <button
+                      onClick={() => {
+                        addToCart(item);
+                        toast.success(`${item.title} added to cart!`);
+                      }}
+                      className="w-full py-1.5 md:py-2.5 bg-white border-2 border-purple-600 hover:bg-purple-600 hover:text-white text-purple-600 font-semibold rounded-xl transition-all duration-300 text-sm md:text-base shadow-sm hover:shadow-md"
+                    >
+                      Add to Cart
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         )}
-      </div>
 
-      {totalPages > 1 && (
-        <div className="flex justify-center gap-4 mt-6 ">
-          <button
-            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-            disabled={currentPage === 1}
-            className="px-3 py-1 bg-purple-100 hover:bg-purple-200 rounded"
-          >
-            Previous
-          </button>
-          <span className="font-semibold">
-            Page {currentPage} of {totalPages}
-          </span>
-          <button
-            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-            disabled={currentPage === totalPages}
-            className="px-3 py-1 bg-purple-100 hover:bg-purple-200 rounded"
-          >
-            Next
-          </button>
-        </div>
-      )}
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-8 pt-6 border-t border-gray-200">
+            <div className="text-sm text-gray-600">
+              Page {currentPage} of {totalPages}
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+                className="px-4 py-2 bg-purple-100 hover:bg-purple-200 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed text-purple-700 font-semibold rounded-lg transition-all duration-300"
+              >
+                ← Previous
+              </button>
+              <div className="flex gap-1">
+                {[...Array(Math.min(5, totalPages))].map((_, idx) => {
+                  let pageNum;
+                  if (totalPages <= 5) {
+                    pageNum = idx + 1;
+                  } else if (currentPage <= 3) {
+                    pageNum = idx + 1;
+                  } else if (currentPage >= totalPages - 2) {
+                    pageNum = totalPages - 4 + idx;
+                  } else {
+                    pageNum = currentPage - 2 + idx;
+                  }
+                  
+                  return (
+                    <button
+                      key={pageNum}
+                      onClick={() => setCurrentPage(pageNum)}
+                      className={`w-10 h-10 rounded-lg font-semibold transition-all duration-300 ${
+                        currentPage === pageNum
+                          ? "bg-purple-600 text-white shadow-md"
+                          : "bg-gray-100 hover:bg-purple-100 text-gray-700"
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  );
+                })}
+              </div>
+              <button
+                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+                className="px-4 py-2 bg-purple-100 hover:bg-purple-200 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed text-purple-700 font-semibold rounded-lg transition-all duration-300"
+              >
+                Next →
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

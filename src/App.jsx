@@ -1,30 +1,34 @@
-import React from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import React from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import ForgotPassword from "./pages/Forgot-Password";
+import AppLayout from "./components/AppLayout";
+import HomePage from "./components/HomePage";
+import Wishlist from "./components/Wishlist";
+import Store from "./components/Store";
+import Cart from "./components/Cart";
+import ProductDetailPage from "./pages/ProductDetailPage";
+import RedirectToStoreWithFilters from "./components/RedirectToStoreWithFilters";
+import OccasionShop from "./pages/OccasionShop";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import SearchResults from "./pages/SearchResults";
 
-import AppLayout from './components/AppLayout';
-import HomePage from './components/HomePage';
-import Wishlist from './components/Wishlist';
-import Store from './components/Store';
-import Cart from './components/Cart';
-import ProductDetailPage from './pages/ProductDetailPage';
-import RedirectToStoreWithFilters from './components/RedirectToStoreWithFilters';
-import OccasionShop from './pages/OccasionShop';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import SearchResults from './pages/SearchResults';
+// ✅ import AuthProvider
+import { AuthProvider } from "./components/AuthContext";
 
 export default function App() {
   const location = useLocation();
 
   return (
-    <>
+    <AuthProvider>
       <Toaster position="top-right" reverseOrder={false} />
 
       <Routes>
         {/* Auth routes (no layout) */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
         {/* App routes with layout */}
         <Route element={<AppLayout />}>
@@ -38,65 +42,6 @@ export default function App() {
           <Route path="/search" element={<SearchResults />} />
         </Route>
       </Routes>
-    </>
+    </AuthProvider>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Developer - Arpit Shukla

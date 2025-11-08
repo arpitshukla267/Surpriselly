@@ -16,7 +16,7 @@ import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useCart } from "../components/CartContext";
 import { useWishlist } from "../components/WishlistContext";
 import { useProduct } from "../components/ProductContext";
-import { useAuth } from "../components/AuthContext"; // ✅ import stays here
+import { useAuth } from "../components/AuthContext";
 import SearchBar from "./ui/SearchBar";
 import UserLocation from "./ui/UserLocation";
 
@@ -31,7 +31,7 @@ const categoriesBottom = [
 ];
 
 export default function Nav() {
-  const { user, setUser } = useAuth(); // ✅ FIXED: Hook now inside the component
+  const { user, setUser } = useAuth(); 
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -45,6 +45,7 @@ export default function Nav() {
   const currentCategory = decodeURIComponent(currentCategoryRaw).trim();
   const [scrolled, setScrolled] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [Authorised, setAuthorized] = useState(false)
 
 
   useEffect(() => {
@@ -151,35 +152,47 @@ export default function Nav() {
             >
               <FaUser />
             </button>
-
+          
             {profileDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-32 bg-purple-300 rounded shadow-lg z-50">
-                <button
-                  onClick={() => {
-                    navigate("/login");
-                    setProfileDropdownOpen(false);
-                  }}
-                  className="block w-full text-left px-4 py-2 text-sm hover:bg-purple-100 hover:cursor-pointer"
-                >
-                  Login
-                </button>
-                <button
-                  onClick={() => {
-                    setProfileDropdownOpen(false);
-                  }}
-                  className="block w-full text-left h-px text-sm bg-white hover:bg-purple-100"
-                >
-                  
-                </button>
-                <button
-                  onClick={() => {
-                    navigate("/signup");
-                    setProfileDropdownOpen(false);
-                  }}
-                  className="block w-full text-left px-4 py-2 text-sm hover:bg-purple-100 hover:cursor-pointer"
-                >
-                  Signup
-                </button>
+              <div className="absolute right-0 mt-2 w-40 bg-purple-300 rounded shadow-lg z-50">
+                {user && user.isLoggedIn ? (
+                  <>
+                    <div className="px-4 py-2 text-sm font-semibold text-gray-800">
+                      Hi, {user.name || "User"} 👋
+                    </div>
+                    <button
+                      onClick={() => {
+                        setUser({ isLoggedIn: false, name: "", avatar: "" });
+                        setProfileDropdownOpen(false);
+                        navigate("/");
+                      }}
+                      className="block w-full text-left px-4 py-2 text-sm hover:bg-purple-100 hover:cursor-pointer"
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => {
+                        navigate("/login");
+                        setProfileDropdownOpen(false);
+                      }}
+                      className="block w-full text-left px-4 py-2 text-sm hover:bg-purple-100 hover:cursor-pointer"
+                    >
+                      Login
+                    </button>
+                    <button
+                      onClick={() => {
+                        navigate("/signup");
+                        setProfileDropdownOpen(false);
+                      }}
+                      className="block w-full text-left px-4 py-2 text-sm hover:bg-purple-100 hover:cursor-pointer"
+                    >
+                      Signup
+                    </button>
+                  </>
+                )}
               </div>
             )}
           </div>
